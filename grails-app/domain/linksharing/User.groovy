@@ -8,10 +8,10 @@ class User {
     String firstName
     String lastName
     String photo
-    Boolean admin
-    Boolean active
-    Date dateCreated
-    Date lastUpdated
+    Boolean admin = false
+    Boolean active =true
+    Date dateCreated =new Date()
+    Date lastUpdated =new Date()
     static hasMany = [topic : Topic, subscription : Subscription,
                       readingItem : ReadingItem, resouce: Resource]
 

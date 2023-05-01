@@ -3,10 +3,10 @@ import enums.SeriousnessEnum
 
 class Subscription {
 
-    Topic topic
-    User user
+//    Topic topic
+//    User user
     SeriousnessEnum SERIOUSNESS
-    Date dateCreated
+    Date dateCreated = new Date()
 
     static belongsTo = [user: User, topic: Topic]
 

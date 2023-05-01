@@ -5,14 +5,16 @@ import enums.VisibilityEnum
 class Topic {
 
     String name
-    Date dateCreated
-    Date lastUpdate
+//    User createdBy
+    Date dateCreated= new Date()
+    Date lastUpdate = new Date()
     VisibilityEnum VISIBILITY
-    Boolean isDeleted
+    Boolean isDeleted = false
 
     static hasMany = [subscription: Subscription, resourse: Resource]
 
-    static belongsTo = [user: User, subscription: Subscription, resource: Resource]
+    static belongsTo = [createdBy: User]
+    //subscription: Subscription, resource: Resource
 
     static constraints = {
         name blank: false

@@ -1,6 +1,6 @@
 package linksharing
 
-class DocumentResource {
+class DocumentResource extends Resource{
 
     String filePath
 

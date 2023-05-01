@@ -1,6 +1,6 @@
 package linksharing
 
-class LinkResource {
+class LinkResource extends Resource{
 
     String url
 
