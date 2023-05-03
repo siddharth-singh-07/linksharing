@@ -4,7 +4,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="mr-auto">
+        <ul class="mr-auto justify-content-end">
+            <g:message code="${flash.message}"/>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <div class="d-flex input-group w-auto">

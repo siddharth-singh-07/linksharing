@@ -11,14 +11,48 @@ class UserController {
         def usr= params.signInUsername
         def pass= params.signInPass
 
-
-
-        render(view: 'dashboard')
+        def user= User.findByUsernameOrEmail(usr, usr)
+        if(user){
+            if(pass == user.password){
+                session.userId = user.username
+//                redirect(controller: 'User', action: '')
+                render(view: 'dashboard')
+            }
+            else{
+                flash.error= "Incorrect password"
+                render(view: '/home/homePage')
+            }
+        }
+        else{
+            flash.error= "User with given email or username not found"
+            render(view: '/home/homePage')
+        }
     }
 
     def registerUser(){
+        def newUser= new User(params)
+        newUser.firstName= params.firstName.substring(0, 1).toUpperCase() + params.firstName.substring(1).toLowerCase()
+        newUser.lastName= params.firstName.substring(0, 1).toUpperCase() + params.firstName.substring(1).toLowerCase()
+        def passwordRe= params.passwordRe
+        try{
+            newUser.validate()
+        }
+        catch (javax.validation.ValidationException e) {
+            if(e.getMessage() == "duplicate"){
+                flash.message="The username has already been taken"
+                render(view: '/home/homePage')
+                return
+            }
+        }
+        if(newUser.password != passwordRe){
+            flash.message= "Confirm password does not match"
+            render(view: '/home/homePage')
+            return
+        }
 
-
+        newUser.save(flush:true, failOnError:true)
+        flash.message= "Success"
+        render(view: '/home/homePage')
 
     }
 

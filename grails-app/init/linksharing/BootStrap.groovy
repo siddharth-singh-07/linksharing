@@ -6,7 +6,7 @@ class BootStrap {
 
     def init = { servletContext ->
 
-//        def admin_user= new User(email: "siddharth@gmail.com", username: "admin", password: "admin", firstName: "Siddharth", lastName: "Singh", photo: "xyz.com", admin:"true", active: "true", lastUpdated: new Date()).save(flush: true, failOnError: true)
+        def admin_user= new User(email: "siddharthsingh0705@gmail.com", username: "admin", password: "Admin123", firstName: "Siddharth", lastName: "Singh", photo: "xyz.com", admin:"true", active: "true").save(flush: true, failOnError: true)
 //        def user1= new User(email: "user1@gmail.com", username: "user1", password: "user1", firstName: "Test1", lastName: "One", photo: "xyz.com", lastUpdated: new Date()).save()
 //        def user2= new User(email: "user2@gmail.com", username: "user2", password: "user2", firstName: "Test2", lastName: "Two", photo: "xyz.com", lastUpdated: new Date()).save()
 //        def user3= new User(email: "user3@gmail.com", username: "user3", password: "user3", firstName: "Test3", lastName: "Three", photo: "xyz.com", lastUpdated: new Date()).save()
