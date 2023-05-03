@@ -5,9 +5,27 @@ import static org.springframework.http.HttpStatus.*
 
 class UserController {
 
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    def authenticateUser(){
+        def usr= params.signInUsername
+        def pass= params.signInPass
+
+
+
+        render(view: 'dashboard')
+    }
+
+    def registerUser(){
+
+
+
+    }
+
+
     UserService userService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)

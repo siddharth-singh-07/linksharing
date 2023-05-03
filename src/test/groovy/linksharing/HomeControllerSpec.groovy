@@ -1,9 +1,9 @@
 package linksharing
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class UserSpec extends Specification implements DomainUnitTest<User> {
+class HomeControllerSpec extends Specification implements ControllerUnitTest<HomeController> {
 
     def setup() {
     }

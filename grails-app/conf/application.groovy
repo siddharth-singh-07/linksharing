@@ -1,7 +1,7 @@
 grails {
     profile = 'web'
     codegen {
-        defaultPackage = 'sample'
+        defaultPackage = 'linksharing'
     }
     gorm {
         reactor {
