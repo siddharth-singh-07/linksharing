@@ -1,18 +1,47 @@
 package linksharing
 
-import grails.gorm.services.Service
+import enums.SeriousnessEnum
+import grails.gorm.transactions.Transactional
 
-@Service(Topic)
-interface TopicService {
+@Transactional
+class TopicService {
+    def SubscriptionService
 
-    Topic get(Serializable id)
+    def serviceMethod() {
 
-    List<Topic> list(Map args)
+    }
 
-    Long count()
+    def allTopics(){
+        def allTopicsList= Topic.createCriteria().list {
+            projections{
+                property('name')
+            }
+        }
+        return allTopicsList
+    }
 
-    void delete(Serializable id)
+//    def allSubscribedTopics(User user){
+//        List allSubscribedTopicsList= Subscription.createCriteria().list {
+//            projections{
+//                property('topic')
+//            }
+//            eq('user', user)
+//        }
+//        return allSubscribedTopicsList
+//    }
 
-    Topic save(Topic topic)
+    Topic createTopic(params){
+        Topic topic = new Topic()
+        topic.name= params.modalCreateTopicNameInput
+        topic.VISIBILITY= params.modalCreateTopicVisibilitySelect
+        topic.createdBy= params.user
+
+        topic.validate()
+        if(!topic.hasErrors()){
+            topic.save(flush:true, falOnError:true)
+            SubscriptionService.createSubscription(topic, params.user, SeriousnessEnum.VERY_SERIOUS)
+        }
+        return topic
+    }
 
 }

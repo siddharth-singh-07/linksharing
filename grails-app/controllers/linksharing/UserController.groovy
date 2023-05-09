@@ -1,11 +1,10 @@
 package linksharing
 
-import grails.validation.ValidationException
-import static org.springframework.http.HttpStatus.*
-
 class UserController {
+    def TopicService
+    def UserService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static defaultAction = "dashboard"
 
     def authenticateUser(){
         def usr= params.signInUsername
@@ -13,139 +12,74 @@ class UserController {
 
         def user= User.findByUsernameOrEmail(usr, usr)
         if(user){
-            if(pass == user.password){
-                session.userId = user.username
-//                redirect(controller: 'User', action: '')
-                render(view: 'dashboard')
+            if(user.isActive) {
+                if (pass == user.password) {
+                    session.user = user
+                    flash.message = "Welcome ${user.username}"
+                    redirect(action: 'dashboard')
+                    return
+                }
+                else {
+                    flash.warn = "Incorrect password"
+                    forward(controller: 'Home', model: ['user': user])
+                    return
+                }
             }
             else{
-                flash.error= "Incorrect password"
-                render(view: '/home/homePage')
+                flash.warn = "The user is disabled, contact administrator"
             }
         }
         else{
-            flash.error= "User with given email or username not found"
-            render(view: '/home/homePage')
+            flash.warn= "User with given email or username not found"
+
         }
+        redirect(controller: 'Home')
     }
 
-    def registerUser(){
-        def newUser= new User(params)
-        newUser.firstName= params.firstName.substring(0, 1).toUpperCase() + params.firstName.substring(1).toLowerCase()
-        newUser.lastName= params.firstName.substring(0, 1).toUpperCase() + params.firstName.substring(1).toLowerCase()
-        def passwordRe= params.passwordRe
-        try{
-            newUser.validate()
+    def registerUser() {
+        def newUser = new User()
+        bindData(newUser, params, [exclude: ['firstName', 'lastName', 'photo']])
+        if(params.firstName && params.lastName) {
+            newUser.firstName = params.firstName.substring(0, 1).toUpperCase() + params.firstName.substring(1).toLowerCase()
+            newUser.lastName = params.lastName.substring(0, 1).toUpperCase() + params.lastName.substring(1).toLowerCase()
         }
-        catch (javax.validation.ValidationException e) {
-            if(e.getMessage() == "duplicate"){
-                flash.message="The username has already been taken"
-                render(view: '/home/homePage')
-                return
-            }
-        }
-        if(newUser.password != passwordRe){
-            flash.message= "Confirm password does not match"
-            render(view: '/home/homePage')
+//        def passwordRe = params.passwordRe
+
+        newUser.validate()
+
+        if (newUser.hasErrors()) {
+            forward(controller: 'Home', model: ['newUser': newUser, 'myObject':newUser])
             return
         }
-
-        newUser.save(flush:true, failOnError:true)
-        flash.message= "Success"
-        render(view: '/home/homePage')
+        else {
+                def userPic= request.getFile('photo')
+                if(userPic && !userPic.isEmpty()){
+                    String filePath= "userUploads/pfp${newUser.username}"
+                    new FileOutputStream("/home/lt-siddharths/LinkSharing/grails-app/assets/images/"+filePath).leftShift(userPic.getInputStream())
+                    newUser.photo= filePath
+                }
+                else{
+                    newUser.photo= 'userUploads/user.png'
+                }
+            newUser.save(flush: true, failOnError: true)
+            flash.message= "Registration successful, Please sign in!"
+            redirect(controller: 'home')
+        }
 
     }
 
-
-    UserService userService
-
-
-
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond userService.list(params), model:[userCount: userService.count()]
+    def logoutUser(){
+        session.invalidate()
+        flash.message="Logged out successfully"
+        redirect(controller: 'Home')
     }
 
-    def show(Long id) {
-        respond userService.get(id)
+    def dashboard() {
+        List userSubscriptionsList= UserService.getUserSubscriptions(session.user)
+        List userTopicsList= UserService.getUserTopics(session.user)
+
+        render(view: 'dashboard', model: ['myObject':flash.object, 'userSubscriptionsList':userSubscriptionsList, 'userTopicsList': userTopicsList])
+//
     }
 
-    def create() {
-        respond new User(params)
-    }
-
-    def save(User user) {
-        if (user == null) {
-            notFound()
-            return
-        }
-
-        try {
-            userService.save(user)
-        } catch (ValidationException e) {
-            respond user.errors, view:'create'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id])
-                redirect user
-            }
-            '*' { respond user, [status: CREATED] }
-        }
-    }
-
-    def edit(Long id) {
-        respond userService.get(id)
-    }
-
-    def update(User user) {
-        if (user == null) {
-            notFound()
-            return
-        }
-
-        try {
-            userService.save(user)
-        } catch (ValidationException e) {
-            respond user.errors, view:'edit'
-            return
-        }
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), user.id])
-                redirect user
-            }
-            '*'{ respond user, [status: OK] }
-        }
-    }
-
-    def delete(Long id) {
-        if (id == null) {
-            notFound()
-            return
-        }
-
-        userService.delete(id)
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
 }

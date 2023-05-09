@@ -1,18 +1,29 @@
 package linksharing
 
-import grails.gorm.services.Service
+import enums.SeriousnessEnum
+import grails.gorm.transactions.Transactional
 
-@Service(Subscription)
-interface SubscriptionService {
+@Transactional
+class SubscriptionService {
 
-    Subscription get(Serializable id)
+    def serviceMethod() {
 
-    List<Subscription> list(Map args)
+    }
 
-    Long count()
+    boolean createSubscription(Topic topic, User user, SeriousnessEnum seriousness){
+        Subscription sub= new Subscription()
+        sub.topic= topic
+        sub.user=user
+        sub.SERIOUSNESS= seriousness
 
-    void delete(Serializable id)
+        sub.validate()
+        if(sub.hasErrors()){
+            return false
+        }
+        else{
+            sub.save(flush:true, failOnError:true)
+            return true
+        }
 
-    Subscription save(Subscription subscription)
-
+    }
 }

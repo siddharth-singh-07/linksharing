@@ -1,18 +1,26 @@
 package linksharing
 
-import grails.gorm.services.Service
+import grails.gorm.transactions.Transactional
 
-@Service(User)
-interface UserService {
+@Transactional
+class UserService {
 
-    User get(Serializable id)
+    def serviceMethod() {
 
-    List<User> list(Map args)
+    }
 
-    Long count()
+    List getUserSubscriptions(User user){
+        List userSubscriptionsList = Subscription.createCriteria().list {
+            eq('user', user)
+        }
+        return userSubscriptionsList
+    }
 
-    void delete(Serializable id)
-
-    User save(User user)
+    def getUserTopics(User user){
+        List userTopicsList= Topic.createCriteria().list {
+            eq('createdBy', user)
+        }
+        return userTopicsList
+    }
 
 }

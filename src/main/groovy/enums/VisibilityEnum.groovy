@@ -8,4 +8,12 @@ public enum VisibilityEnum {
     VisibilityEnum(String value){
         this.value =value
     }
+
+    String toString(){
+        value
+    }
+
+    String getKey(){
+        name()
+    }
 }

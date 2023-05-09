@@ -1,8 +1,5 @@
 package linksharing
-
-import com.sun.org.apache.bcel.internal.generic.LDIV
-
-import javax.validation.ValidationException
+import grails.validation.*
 
 class User {
 
@@ -12,49 +9,40 @@ class User {
     String firstName
     String lastName
     String photo
-    Boolean admin = false
-    Boolean active =true
-    Date dateCreated =new Date()
-    Date lastUpdated =new Date()
-    static hasMany = [topic : Topic, subscription : Subscription,
-                      readingItem : ReadingItem, resouce: Resource,
-                      resourceRating: ResourceRating]
+    Boolean isAdmin = false
+    Boolean isActive = true
+    Date dateCreated = new Date()
+    Date lastUpdated = new Date()
+
+    static hasMany = [
+            topic : Topic, subscription : Subscription,
+            readingItem : ReadingItem, resouce: Resource,
+            resourceRating: ResourceRating
+    ]
 
     static belongsTo = []
 
     static constraints = {
-        email(unique: true, email: true)
-        username(blank: false, validator: {
-            if(User.findByUsername(it))
-                throw new ValidationException("duplicate")
-//                return "duplicate"
-        })
-//        throws DataIntegrityViolationException
-        password(blank: false)
-        password validator:{ val->
-            if(val.length() < 7)
-                return false
-//                throw new ValidationException("Password length is less than 7")
-
-            boolean upper=false, lower=false, num= false
-            val.each{
-                if(Character.isUpperCase((char)it)) upper=true
-                if(Character.isLowerCase((char)it)) lower=true
-                if((String)it.isNumber()) num=true
+        email email: true, validator: {val, obj ->
+            if(User.findByEmail(val)) {
+                return "linkSharing.duplicateEmail"
             }
-            if(!upper || !lower || !num)
-                return false
-//                throw new ValidationException("Password should contain at least 1 lower case, 1 upper case and 1 number")
         }
-        firstName(blank: false, nullable: false)
-//        validator: {validateName(it)}
+
+        username blank: false, validator: {val, obj ->
+            if(User.findByUsername(val)) {
+                return "linkSharing.duplicateUsername"
+            }
+        }
+
+        password(blank: false, minSize: 5)
+        firstName(blank: false)
         lastName(blank: false, nullable: false)
         photo(nullable:true)
-
     }
+
     static mapping = {
         table 'USER_TABLE'
-
     }
 
 //    def validateName(val){

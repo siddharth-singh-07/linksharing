@@ -3,8 +3,6 @@ import enums.SeriousnessEnum
 
 class Subscription {
 
-//    Topic topic
-//    User user
     SeriousnessEnum SERIOUSNESS
     Date dateCreated = new Date()
 
