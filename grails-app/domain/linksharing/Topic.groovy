@@ -10,7 +10,7 @@ class Topic {
     Date lastUpdate = new Date()
     Boolean isDeleted = false
 
-    static hasMany = [subscription: Subscription, resourse: Resource]
+    static hasMany = [subscription: Subscription, resource: Resource]
 
     static belongsTo = [createdBy: User]
 

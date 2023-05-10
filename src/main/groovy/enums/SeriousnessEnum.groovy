@@ -9,4 +9,11 @@ enum SeriousnessEnum {
     SeriousnessEnum(String value){
         this.value =value
     }
+    String toString(){
+        value
+    }
+
+    String getKey(){
+        name()
+    }
 }

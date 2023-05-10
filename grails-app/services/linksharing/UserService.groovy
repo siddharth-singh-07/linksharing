@@ -1,6 +1,7 @@
 package linksharing
 
 import grails.gorm.transactions.Transactional
+import org.hibernate.sql.JoinType
 
 @Transactional
 class UserService {
@@ -10,8 +11,12 @@ class UserService {
     }
 
     List getUserSubscriptions(User user){
-        List userSubscriptionsList = Subscription.createCriteria().list {
-            eq('user', user)
+        List userSubscriptionsList = Topic.createCriteria().listDistinct {
+            subscription {
+                eq('user', user)
+            }
+            createAlias('resource', 'r', JoinType.LEFT_OUTER_JOIN)
+            order('r.dateCreated', 'desc')
         }
         return userSubscriptionsList
     }

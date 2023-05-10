@@ -106,7 +106,7 @@
                 </div>
                 <div class="form-outline mb-3">
                     <div><label class="form-label" for="modalSendInvitationTopicSelect">Topic</label></div>
-                    <g:select id="modalSendInvitationTopicSelect" name="invitationTopic" from="${userSubscriptionsList.collect{it.topic.name}}" class="form-select form-select-lg mb-3 form-control"/>
+                    <g:select id="modalSendInvitationTopicSelect" name="invitationTopic" from="${userSubscriptionsList}" optionKey="${{it?.id}}" optionValue="${{it?.name}}" class="form-select form-select-lg mb-3 form-control"/>
                 </div>
             </div>
             <div class="modal-footer">
@@ -139,7 +139,7 @@
                     <div class="form-outline mb-3">
                         <div><label class="form-label" for="modalShareLinkTopicSelect">Topic</label></div>
 %{--                        <g:select id="modalShareLinkTopicSelect" name="modalShareLinkTopicSelect" from="${userSubscriptionsList.collect{it.topic?.name}}" class="form-select form-select-lg mb-3 form-control" />--}%
-                        <g:select id="modalShareLinkTopicSelect" name="modalShareLinkTopicSelect" from="${userSubscriptionsList}" optionKey="${{it.topic.id}}" optionValue="${{it.topic.name}}" class="form-select form-select-lg mb-3 form-control" />
+                        <g:select id="modalShareLinkTopicSelect" name="modalShareLinkTopicSelect" from="${userSubscriptionsList}" optionKey="${{it?.id}}" optionValue="${{it?.name}}" class="form-select form-select-lg mb-3 form-control" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -172,7 +172,7 @@
                 </div>
                 <div class="form-outline mb-3">
                     <div><label class="form-label" for="modalShareDocTopicSelect">Topic</label></div>
-                    <g:select id="modalShareDocTopicSelect" name="modalShareDocTopicSelect" from="${userSubscriptionsList}" optionKey="${{it.topic.id}}" optionValue="${{it.topic.name}}" class="form-select form-select-lg mb-3 form-control"/>
+                    <g:select id="modalShareDocTopicSelect" name="modalShareDocTopicSelect" from="${userSubscriptionsList}" optionKey="${{it?.id}}" optionValue="${{it?.name}}" class="form-select form-select-lg mb-3 form-control"/>
                 </div>
                 </div>
                 <div class="modal-footer">

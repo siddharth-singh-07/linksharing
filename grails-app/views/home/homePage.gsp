@@ -21,29 +21,29 @@
         <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
             <div class="card-body">
                 <h4 class="card-title mb-4">Recent shares</h4>
-                <g:each in="${0..4}">
+                <g:each in="${recentSharesList}">
                     <div class="card mb-3" style="border-radius: 15px;">
                         <div class="card-body p-2 row align-items-center">
                             <div class="col-auto">
-                                <img src="${assetPath(src: 'icons/user.png')}" width="95px" height="95px" />
+                                <img src="${assetPath(src: "${it?.createdBy?.photo}")}" width="95px" height="95px" />
                             </div>
                             <div class="col">
                                 <div class="row d-flex">
                                     <div class="col col-auto">
-                                        <h5 class="">${recentSharesList[it]?.createdBy?.firstName} ${recentSharesList[it]?.createdBy?.lastName}</h5>
+                                        <h5 class="">${it?.createdBy?.firstName} ${it?.createdBy?.lastName}</h5>
                                     </div>
                                     <div class="col col-auto">
-                                        <p class="text-muted">@${recentSharesList[it]?.createdBy?.username}</p>
+                                        <p class="text-muted">@${it?.createdBy?.username}</p>
                                     </div>
                                     <div class="col d-flex">
-                                        <div class="ml-auto mr-5"> <a class="justify-content-end" href="">${recentSharesList[it]?.topic?.name}</a>
+                                        <div class="ml-auto mr-5"> <a class="justify-content-end" href="">${it?.topic?.name}</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <p>
-                                            ${recentSharesList[it]?.description?.take(150)}
+                                            ${it?.description?.take(150)}
                                         </p>
                                     </div>
                                 </div>

@@ -79,7 +79,6 @@ class UserController {
         List userTopicsList= UserService.getUserTopics(session.user)
 
         render(view: 'dashboard', model: ['myObject':flash.object, 'userSubscriptionsList':userSubscriptionsList, 'userTopicsList': userTopicsList])
-//
     }
 
 }
