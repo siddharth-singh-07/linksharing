@@ -28,8 +28,7 @@ class TopicController {
 //            redirect(controller: 'User', action: "dashboard")
 //        }
 //        else{
-            flash.message="Topic visibility edited successfully"
-            redirect(controller:'User', action: 'dashboard')
+            render status: 200, text: "Success"
 //        }
     }
 

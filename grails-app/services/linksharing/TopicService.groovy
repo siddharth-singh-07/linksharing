@@ -39,7 +39,7 @@ class TopicService {
         topic.validate()
         if(!topic.hasErrors()){
             topic.save(flush:true, falOnError:true)
-            SubscriptionService.createSubscription(topic, topic.createdBy, SeriousnessEnum.VERY_SERIOUS)
+            SubscriptionService.createSubscription(topic.id, topic.createdBy.username, SeriousnessEnum.VERY_SERIOUS)
         }
         return topic
     }

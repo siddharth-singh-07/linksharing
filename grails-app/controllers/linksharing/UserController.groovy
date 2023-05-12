@@ -3,6 +3,7 @@ package linksharing
 class UserController {
     def TopicService
     def UserService
+    def ResourceService
 
     static defaultAction = "dashboard"
 
@@ -72,6 +73,15 @@ class UserController {
         session.invalidate()
         flash.message="Logged out successfully"
         redirect(controller: 'Home')
+    }
+
+    def profile(){
+        User targetUser= User.findByUsername(params.user)
+
+        List userSubscriptionsList= UserService.getUserSubscriptions(targetUser)
+        List userTopicsList= UserService.getUserTopics(targetUser)
+//        List userPostsList = ResourceService.fetchUserPosts(targetUser)
+        render(view:'profile', model: ['targetUser': targetUser, 'userSubscriptionsList':userSubscriptionsList, 'userTopicsList': userTopicsList])
     }
 
     def dashboard() {
