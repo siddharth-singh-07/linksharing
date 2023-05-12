@@ -2,6 +2,7 @@ package linksharing
 
 class ResourceController {
     def ResourceService
+    def ReadingItemService
 
     def index() {}
 
@@ -29,5 +30,11 @@ class ResourceController {
             flash.message = "Document shared in ${documentResource.topic.name} successfully"
             redirect(controller: 'User', action: 'dashboard')
         }
+    }
+
+    def markRead(){
+        ReadingItemService.markReadingItemRead(params.readingItemId)
+//        redirect(controller: 'user', action: 'dashboard')
+        render status: 200, text: "Success"
     }
 }

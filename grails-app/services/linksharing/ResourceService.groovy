@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter
 @Transactional
 class ResourceService {
 
+    def ReadingItemService
+
     List recentShares() {
         List recentSharesList = Resource.createCriteria().list {
             topic {
@@ -41,6 +43,7 @@ class ResourceService {
         linkResource.validate()
         if (!linkResource.hasErrors()) {
             linkResource.save(flush: true, failOnError: true)
+            ReadingItemService.addResource(linkResource)
         }
         return linkResource
     }
@@ -65,11 +68,20 @@ class ResourceService {
         documentResource.validate()
         if (!documentResource.hasErrors()) {
             documentResource.save(flush: true, failOnError: true)
+            ReadingItemService.addResource(documentResource)
         }
         return documentResource
     }
 
-//    def fetchUserPosts(username){
-//        List userPosts=
-//    }
+    def fetchUserPublicPosts(username){
+        def userPublicPostsList= Resource.createCriteria().list {
+            createdBy{
+                eq('username', username)
+            }
+            topic{
+                eq('VISIBILITY', VisibilityEnum.PUBLIC)
+            }
+        }
+        return userPublicPostsList
+    }
 }

@@ -253,7 +253,7 @@
                         </g:each>
                     </g:else>
                 </div>
-            </div> <!-- Subscriptions card (displays all subbscribed topics of user) -->
+            </div> <!-- Subscriptions card (displays all subscribed topics of user) -->
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
@@ -263,6 +263,50 @@
                 <div class="card-body p-0">
                     <g:if test="${session.user.isAdmin || session.user.username == targetUser.username}">
                         <g:each in="${targetUser.resource}" var="resourceObj">
+                            <div class="card-body p-2 overflow-auto">
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="">${resourceObj.topic.name}</a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <p>${resourceObj.description}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex">
+                                    <div class="col col-auto mr-auto">
+                                        <a class="mr-2" href="https://facebook.com">
+                                            <img src="${assetPath(src: 'icons/facebook-logo.png')}" height="20px"
+                                                 width="20px" alt="facebook">
+                                        </a>
+                                        <a class="mr-2" href="https://twitter.com">
+                                            <img src="${assetPath(src: 'icons/twitter-logo.png')}" height="20px"
+                                                 width="20px" alt="facebook">
+                                        </a>
+                                        <a href="https://google.com">
+                                            <img src="${assetPath(src: 'icons/google-logo.png')}" height="20px"
+                                                 width="20px" alt="facebook">
+                                        </a>
+                                    </div> <!-- facebook/Twitter icons -->
+                                    <div class="col d-flex">
+                                        <g:if test="${resourceObj instanceof linksharing.LinkResource}">
+                                            <a class="ml-auto" href="http://${resourceObj.url}">View full site</a>
+                                        </g:if>
+                                        <g:else>
+                                            <a class="ml-auto" href="">Donwload</a>
+                                        </g:else>
+                                        <a class="ml-4" href="">View post</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </g:each>
+                    </g:if>
+                    <g:else>
+                        <g:each in="${userPublicPostsList}"
+                                var="topicObj">
                             <div class="card-body p-2 overflow-auto">
                                 <div class="row">
                                     <div class="col">
@@ -303,47 +347,7 @@
                                 </div>
                             </div>
                         </g:each>
-                    </g:if>
-                %{--                    <g:else>--}%
-                %{--                        <g:each in="${userSubscriptionsList.findAll { it.VISIBILITY == enums.VisibilityEnum.PUBLIC }}"--}%
-                %{--                                var="topicObj">--}%
-                %{--                            <div class="card-body p-2 ">--}%
-                %{--                                <div class="row">--}%
-                %{--                                    <div class="col">--}%
-                %{--                                        <a href="">${topicObj.name}</a>--}%
-                %{--                                    </div>--}%
-
-                %{--                                    <div class="col">--}%
-                %{--                                        <p class="text-muted">Subscriptions</p>--}%
-                %{--                                    </div>--}%
-
-                %{--                                    <div class="col">--}%
-                %{--                                        <p class="text-muted">Post</p>--}%
-                %{--                                    </div>--}%
-                %{--                                </div>--}%
-
-                %{--                                <div class="row">--}%
-                %{--                                    <div class="col">--}%
-                %{--                                        <g:form controller="subscription" action="editSeriousness" method="POST">--}%
-                %{--                                            <g:hiddenField name="topic" value="${topicObj.id}"/>--}%
-                %{--                                            <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"--}%
-                %{--                                                      onchange="this.form.submit()" optionKey="key"--}%
-                %{--                                                      value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"--}%
-                %{--                                                      class="form-select m-1"/>--}%
-                %{--                                        </g:form>--}%
-                %{--                                    </div>--}%
-
-                %{--                                    <div class="col">--}%
-                %{--                                        <a href="">${topicObj.subscription.size()}</a>--}%
-                %{--                                    </div>--}%
-
-                %{--                                    <div class="col">--}%
-                %{--                                        <a href="">${topicObj.resource.size()}</a>--}%
-                %{--                                    </div>--}%
-                %{--                                </div>--}%
-                %{--                            </div>--}%
-                %{--                        </g:each>--}%
-                %{--                    </g:else>--}%
+                    </g:else>
                 </div>
             </div>
         </div>

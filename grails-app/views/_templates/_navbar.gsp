@@ -43,7 +43,7 @@
                     <img src="${assetPath(src: "${session.user?.photo}")}" height="25em" width="25em"class="rounded-circle" alt="User Profile Picture">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="">Profile</a>
+                    <a class="dropdown-item" href="/user/editProfile">Profile</a>
                     <g:if test="${session.user?.isAdmin}">
                         <a class="dropdown-item" href="/admin/users">Users</a>
                         <a class="dropdown-item" href="#">Topics</a>

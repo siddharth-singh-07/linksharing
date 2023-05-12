@@ -81,6 +81,25 @@ function updateSeriousness(topicId, seriousness) {
         }
     });
 }
+function markRead(readingItemId) {
+    $.ajax({
+        url: '/resource/markRead',
+        type: 'POST',
+        data: {
+            readingItemId: readingItemId
+        },
+        success: function (response) {
+            let myDiv= document.getElementById(`div_${readingItemId}`)
+            myDiv.remove()
+            // setTimeout(function () {
+            //     document.getElementById(`seriousnessSuccess_${topicId}`).classList.add('d-none');
+            // }, 3000);
+        },
+        error: function (xhr, status, error) {
+            document.getElementById(`seriousnessError_${topicId}`).classList.remove('d-none');
+        }
+    });
+}
 
 
 
