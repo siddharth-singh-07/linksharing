@@ -39,9 +39,43 @@ class TopicService {
         topic.validate()
         if(!topic.hasErrors()){
             topic.save(flush:true, falOnError:true)
-            SubscriptionService.createSubscription(topic, params.user, SeriousnessEnum.VERY_SERIOUS)
+            SubscriptionService.createSubscription(topic.id, topic.createdBy.username, SeriousnessEnum.VERY_SERIOUS)
         }
         return topic
+    }
+
+    void editTopicVisibility(topicId, newVisibility){
+        Topic currTopic= Topic.findById(topicId)
+        currTopic.VISIBILITY= newVisibility
+
+        currTopic.save(flush:true, validate:false)
+//        return currTopic
+        //        currTopic.validate()
+//        if(!currTopic.hasErrors()){
+//            currTopic.save(flush:true, failOnError:true)
+//        }
+    }
+
+    Topic editTopicName(topicId, newTopicName){
+        Topic currTopic = Topic.findById(topicId)
+        currTopic.name= newTopicName
+
+        currTopic.validate()
+        if(!currTopic.hasErrors()){
+            currTopic.save(flush:true, failOnError:true)
+        }
+        return currTopic
+    }
+
+    List trendingTopics(){
+        List trendingTopicsList = Resource.createCriteria().list() {
+            projections {
+                count("id", 'resourceCount')
+            }
+            groupProperty("topic")
+            order('resourceCount', 'desc')
+        }
+        return trendingTopicsList
     }
 
 }

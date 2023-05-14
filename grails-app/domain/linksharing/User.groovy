@@ -16,7 +16,7 @@ class User {
 
     static hasMany = [
             topic : Topic, subscription : Subscription,
-            readingItem : ReadingItem, resouce: Resource,
+            readingItem : ReadingItem, resource: Resource,
             resourceRating: ResourceRating
     ]
 
