@@ -132,37 +132,37 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="firstName">First name</label>
                             <g:field type="text" name="firstName" id="firstName" value="${newUser?.firstName}"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="lastName">Last name</label>
                             <g:field type="text" name="lastName" id="lastName" value="${newUser?.lastName}"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="email">Email</label>
                             <g:field type="email" name="email" id="email" value="${newUser?.email}"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="username">Username</label>
                             <g:field type="text" name="username" id="username" value="${newUser?.username}"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
-                        <div class="form-outline mb-3">
+                        <div class="form-outline mb-3 ">
                             <label class="form-label" for="password">Password</label>
                             <g:field type="password" name="password" id="password"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="passwordRe">Confirm Password</label>
                             <g:field type="password" name="passwordRe" id="passwordRe"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">

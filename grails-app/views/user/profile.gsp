@@ -46,11 +46,11 @@
 
                             <div class="row">
                                 <div class="col-sm-6 col-xl-6 col-lg-6">
-                                    <p class="m-0">${userSubscriptionsList.size()}</p>
+                                    <p class="m-0">${userSubscriptionsList?.size()}</p>
                                 </div>
 
                                 <div class="col-sm-6 col-xl-6 col-lg-6">
-                                    <p class="m-0">${userTopicsList.size()}</p>
+                                    <p class="m-0">${userTopicsList?.size()}</p>
                                 </div>
                             </div>
                         </div>
@@ -60,12 +60,12 @@
 
             <div class="card mt-5 mb-5 p-1" style="border-radius: 15px;">
                 <h5 class="card-title m-2">Topics</h5>
-                <g:if test="${session.user.isAdmin || session.user.username == targetUser.username}">
+                <g:if test="${session.user?.isAdmin || session.user?.username == targetUser?.username}">
                     <g:each in="${userTopicsList}" var="topicObj">
                         <div class="card-body p-2 ">
                             <div class="row">
                                 <div class="col">
-                                    <a href="">${topicObj.name}</a>
+                                    <a href="">${topicObj?.name}</a>
                                 </div>
 
                                 <div class="col">
@@ -79,47 +79,47 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
+                                    <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
                                         <div id="editSeriousness_${topicObj.id}">
                                             %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
                                             <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
-                                                      onchange="updateSeriousness('${topicObj.id}', this.value)"
+                                                      onchange="updateSeriousness('${topicObj?.id}', this.value)"
                                                       optionKey="key"
-                                                      value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
+                                                      value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
                                                       class="form-select m-1"/>
                                             <span class="text-success d-none"
-                                                  id="seriousnessSuccess_${topicObj.id}">Success</span>
+                                                  id="seriousnessSuccess_${topicObj?.id}">Success</span>
                                             <span class="text-danger d-none"
-                                                  id="seriousnessError_${topicObj.id}">Failed</span>
+                                                  id="seriousnessError_${topicObj?.id}">Failed</span>
                                         </div>
                                     </g:if>
                                     <g:else>
-                                        <span class="d-none" id="message_${topicObj.id}"></span>
+                                        <span class="d-none" id="message_${topicObj?.id}"></span>
                                     %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
                                     %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
-                                        <button id="subscribeBtn_${topicObj.id}" class="pl-2 btn btn-link"
-                                                onclick="subscribe('${topicObj.id}', '${session.user.username}')">Subscribe</button>
+                                        <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
                                     </g:else>
                                 </div>
 
-                                <div class="col" id="subscriptionCount_${topicObj.id}">
-                                    <a href="">${topicObj.subscription.size()}</a>
+                                <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                    <a href="">${topicObj?.subscription?.size()}</a>
                                 </div>
 
                                 <div class="col">
-                                    <a href="">${topicObj.resource.size()}</a>
+                                    <a href="">${topicObj?.resource?.size()}</a>
                                 </div>
                             </div>
                         </div>
                     </g:each>
                 </g:if>
                 <g:else>
-                    <g:each in="${userTopicsList.findAll { it.VISIBILITY == enums.VisibilityEnum.PUBLIC }}"
+                    <g:each in="${userTopicsList?.findAll { it.VISIBILITY == enums.VisibilityEnum.PUBLIC }}"
                             var="topicObj">
                         <div class="card-body p-2 ">
                             <div class="row">
                                 <div class="col">
-                                    <a href="">${topicObj.name}</a>
+                                    <a href="">${topicObj?.name}</a>
                                 </div>
 
                                 <div class="col">
@@ -133,25 +133,95 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <g:form controller="subscription" action="editSeriousness" method="POST">
-                                        <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                        <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
-                                                  onchange="this.form.submit()" optionKey="key"
-                                                  value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
-                                                  class="form-select m-1"/>
-                                    </g:form>
+                                    <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
+                                        <div id="editSeriousness_${topicObj.id}">
+                                            %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
+                                            <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
+                                                      onchange="updateSeriousness('${topicObj?.id}', this.value)"
+                                                      optionKey="key"
+                                                      value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
+                                                      class="form-select m-1"/>
+                                            <span class="text-success d-none"
+                                                  id="seriousnessSuccess_${topicObj?.id}">Success</span>
+                                            <span class="text-danger d-none"
+                                                  id="seriousnessError_${topicObj?.id}">Failed</span>
+                                        </div>
+                                    </g:if>
+                                    <g:else>
+                                        <span class="d-none" id="message_${topicObj?.id}"></span>
+                                    %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
+                                    %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
+                                        <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
+                                    </g:else>
+                                </div>
+
+                                <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                    <a href="">${topicObj?.subscription?.size()}</a>
                                 </div>
 
                                 <div class="col">
-                                    <a href="">${topicObj.subscription.size()}</a>
-                                </div>
-
-                                <div class="col">
-                                    <a href="">${topicObj.resource.size()}</a>
+                                    <a href="">${topicObj?.resource?.size()}</a>
                                 </div>
                             </div>
                         </div>
                     </g:each>
+
+                    <g:each in="${userTopicsList}"
+                            var="topicObj">
+                        <g:if test="${topicObj.VISIBILITY == enums.VisibilityEnum.PRIVATE && topicObj.subscription.find { it.user.username == session.user.username }}">
+                            <div class="card-body p-2 ">
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="">${topicObj?.name}</a>
+                                    </div>
+
+                                    <div class="col">
+                                        <p class="text-muted">Subscriptions</p>
+                                    </div>
+
+                                    <div class="col">
+                                        <p class="text-muted">Post</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
+                                            <div id="editSeriousness_${topicObj.id}">
+                                                %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
+                                                <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
+                                                          onchange="updateSeriousness('${topicObj?.id}', this.value)"
+                                                          optionKey="key"
+                                                          value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
+                                                          class="form-select m-1"/>
+                                                <span class="text-success d-none"
+                                                      id="seriousnessSuccess_${topicObj?.id}">Success</span>
+                                                <span class="text-danger d-none"
+                                                      id="seriousnessError_${topicObj?.id}">Failed</span>
+                                            </div>
+                                        </g:if>
+                                        <g:else>
+                                            <span class="d-none" id="message_${topicObj?.id}"></span>
+                                        %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
+                                        %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
+                                            <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                    onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
+                                        </g:else>
+                                    </div>
+
+                                    <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                        <a href="">${topicObj?.subscription?.size()}</a>
+                                    </div>
+
+                                    <div class="col">
+                                        <a href="">${topicObj?.resource?.size()}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </g:if>
+                    </g:each>
+
                 </g:else>
             </div> <!-- Topics card (displays all topics created by user) -->
 
@@ -159,12 +229,12 @@
                 <h5 class="card-title m-2">Subscriptions</h5>
 
                 <div class="card-body p-0">
-                    <g:if test="${session.user.isAdmin || session.user.username == targetUser.username}">
+                    <g:if test="${session.user?.isAdmin || session.user?.username == targetUser?.username}">
                         <g:each in="${userSubscriptionsList}" var="topicObj">
                             <div class="card-body p-2 ">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="">${topicObj.name}</a>
+                                        <a href="">${topicObj?.name}</a>
                                     </div>
 
                                     <div class="col">
@@ -178,47 +248,103 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
+                                        <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
                                             <div id="editSeriousness_${topicObj.id}">
                                                 %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
                                                 <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
-                                                          onchange="updateSeriousness('${topicObj.id}', this.value)"
+                                                          onchange="updateSeriousness('${topicObj?.id}', this.value)"
                                                           optionKey="key"
-                                                          value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
+                                                          value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
                                                           class="form-select m-1"/>
                                                 <span class="text-success d-none"
-                                                      id="seriousnessSuccess_${topicObj.id}">Success</span>
+                                                      id="seriousnessSuccess_${topicObj?.id}">Success</span>
                                                 <span class="text-danger d-none"
-                                                      id="seriousnessError_${topicObj.id}">Failed</span>
+                                                      id="seriousnessError_${topicObj?.id}">Failed</span>
                                             </div>
                                         </g:if>
                                         <g:else>
-                                            <span class="d-none" id="message_${topicObj.id}"></span>
+                                            <span class="d-none" id="message_${topicObj?.id}"></span>
                                         %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
                                         %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
-                                            <button id="subscribeBtn_${topicObj.id}" class="pl-2 btn btn-link"
-                                                    onclick="subscribe('${topicObj.id}', '${session.user.username}')">Subscribe</button>
+                                            <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                    onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
                                         </g:else>
                                     </div>
 
-                                    <div class="col" id="subscriptionCount_${topicObj.id}">
-                                        <a href="">${topicObj.subscription.size()}</a>
+                                    <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                        <a href="">${topicObj?.subscription?.size()}</a>
                                     </div>
 
                                     <div class="col">
-                                        <a href="">${topicObj.resource.size()}</a>
+                                        <a href="">${topicObj?.resource?.size()}</a>
                                     </div>
                                 </div>
                             </div>
                         </g:each>
                     </g:if>
                     <g:else>
+                        <g:each in="${userSubscriptionsList}"
+                                var="topicObj">
+                            <g:if test="${topicObj.subscription.find { it.user.username == session.user.username } && topicObj.VISIBILITY == enums.VisibilityEnum.PRIVATE}">
+                                <div class="card-body p-2 ">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="">${topicObj?.name}</a>
+                                        </div>
+
+                                        <div class="col">
+                                            <p class="text-muted">Subscriptions</p>
+                                        </div>
+
+                                        <div class="col">
+                                            <p class="text-muted">Post</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
+                                                <div id="editSeriousness_${topicObj.id}">
+                                                    %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
+                                                    <g:select name="seriousnessSelect"
+                                                              from="${SeriousnessEnum.values()}"
+                                                              onchange="updateSeriousness('${topicObj?.id}', this.value)"
+                                                              optionKey="key"
+                                                              value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
+                                                              class="form-select m-1"/>
+                                                    <span class="text-success d-none"
+                                                          id="seriousnessSuccess_${topicObj?.id}">Success</span>
+                                                    <span class="text-danger d-none"
+                                                          id="seriousnessError_${topicObj?.id}">Failed</span>
+                                                </div>
+                                            </g:if>
+                                            <g:else>
+                                                <span class="d-none" id="message_${topicObj?.id}"></span>
+                                            %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
+                                            %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
+                                                <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                        onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
+                                            </g:else>
+                                        </div>
+
+                                        <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                            <a href="">${topicObj?.subscription?.size()}</a>
+                                        </div>
+
+                                        <div class="col">
+                                            <a href="">${topicObj?.resource?.size()}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </g:if>
+                        </g:each>
+
                         <g:each in="${userSubscriptionsList.findAll { it.VISIBILITY == enums.VisibilityEnum.PUBLIC }}"
                                 var="topicObj">
                             <div class="card-body p-2 ">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="">${topicObj.name}</a>
+                                        <a href="">${topicObj?.name}</a>
                                     </div>
 
                                     <div class="col">
@@ -232,25 +358,40 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <g:form controller="subscription" action="editSeriousness" method="POST">
-                                            <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                            <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
-                                                      onchange="this.form.submit()" optionKey="key"
-                                                      value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
-                                                      class="form-select m-1"/>
-                                        </g:form>
+                                        <g:if test="${topicObj.subscription.find { it.user?.username == session.user?.username }}">
+                                            <div id="editSeriousness_${topicObj.id}">
+                                                %{--                                            <g:hiddenField name="topic" value="${topicObj.id}" />--}%
+                                                <g:select name="seriousnessSelect" from="${SeriousnessEnum.values()}"
+                                                          onchange="updateSeriousness('${topicObj?.id}', this.value)"
+                                                          optionKey="key"
+                                                          value="${topicObj?.subscription?.find { it.user?.username == session.user?.username }?.SERIOUSNESS}"
+                                                          class="form-select m-1"/>
+                                                <span class="text-success d-none"
+                                                      id="seriousnessSuccess_${topicObj?.id}">Success</span>
+                                                <span class="text-danger d-none"
+                                                      id="seriousnessError_${topicObj?.id}">Failed</span>
+                                            </div>
+                                        </g:if>
+                                        <g:else>
+                                            <span class="d-none" id="message_${topicObj?.id}"></span>
+                                        %{--                                        <span class="d-none" id="topicId_${topicObj.id}">${topicObj.id}</span>--}%
+                                        %{--                                        <span class="d-none" id="username_${topicObj.id}">${session.user.username}</span>--}%
+                                            <button id="subscribeBtn_${topicObj?.id}" class="pl-2 btn btn-link"
+                                                    onclick="subscribe('${topicObj?.id}', '${session.user?.username}')">Subscribe</button>
+                                        </g:else>
+                                    </div>
+
+                                    <div class="col" id="subscriptionCount_${topicObj?.id}">
+                                        <a href="">${topicObj?.subscription?.size()}</a>
                                     </div>
 
                                     <div class="col">
-                                        <a href="">${topicObj.subscription.size()}</a>
-                                    </div>
-
-                                    <div class="col">
-                                        <a href="">${topicObj.resource.size()}</a>
+                                        <a href="">${topicObj?.resource?.size()}</a>
                                     </div>
                                 </div>
                             </div>
                         </g:each>
+
                     </g:else>
                 </div>
             </div> <!-- Subscriptions card (displays all subscribed topics of user) -->
@@ -261,18 +402,18 @@
                 <h5 class="card-title m-2">Posts</h5>
 
                 <div class="card-body p-0">
-                    <g:if test="${session.user.isAdmin || session.user.username == targetUser.username}">
+                    <g:if test="${session.user?.isAdmin || session.user?.username == targetUser?.username}">
                         <g:each in="${targetUser.resource}" var="resourceObj">
                             <div class="card-body p-2 overflow-auto">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="">${resourceObj.topic.name}</a>
+                                        <a href="">${resourceObj?.topic?.name}</a>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col">
-                                        <p>${resourceObj.description}</p>
+                                        <p>${resourceObj?.description}</p>
                                     </div>
                                 </div>
 
@@ -293,10 +434,10 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="http://${resourceObj.url}">View full site</a>
+                                            <a class="ml-auto" href="http://${resourceObj?.url}">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Donwload</a>
+                                            <a class="ml-auto" href="">Download</a>
                                         </g:else>
                                         <a class="ml-4" href="">View post</a>
                                     </div>
@@ -305,18 +446,18 @@
                         </g:each>
                     </g:if>
                     <g:else>
-                        <g:each in="${userPublicPostsList}"
-                                var="topicObj">
+                        <g:each in="${targetUser.resource.findAll { it.topic.VISIBILITY == VisibilityEnum.PUBLIC }}"
+                                var="resourceObj">
                             <div class="card-body p-2 overflow-auto">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="">${resourceObj.topic.name}</a>
+                                        <a href="">${resourceObj?.topic?.name}</a>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col">
-                                        <p>${resourceObj.description}</p>
+                                        <p>${resourceObj?.description}</p>
                                     </div>
                                 </div>
 
@@ -337,15 +478,59 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="${resourceObj.url}">View full site</a>
+                                            <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Donwload</a>
+                                            <a class="ml-auto" href="">Download</a>
                                         </g:else>
                                         <a class="ml-4" href="">View post</a>
                                     </div>
                                 </div>
                             </div>
+                        </g:each>
+                        <g:each in="${targetUser.resource}"
+                                var="resourceObj">
+                            <g:if test="${resourceObj.topic.VISIBILITY == enums.VisibilityEnum.PRIVATE && resourceObj.topic.subscription.find { it.user.username == session.user.username }}">
+                                <div class="card-body p-2 overflow-auto">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="">${resourceObj?.topic?.name}</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>${resourceObj?.description}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row d-flex">
+                                        <div class="col col-auto mr-auto">
+                                            <a class="mr-2" href="https://facebook.com">
+                                                <img src="${assetPath(src: 'icons/facebook-logo.png')}" height="20px"
+                                                     width="20px" alt="facebook">
+                                            </a>
+                                            <a class="mr-2" href="https://twitter.com">
+                                                <img src="${assetPath(src: 'icons/twitter-logo.png')}" height="20px"
+                                                     width="20px" alt="facebook">
+                                            </a>
+                                            <a href="https://google.com">
+                                                <img src="${assetPath(src: 'icons/google-logo.png')}" height="20px"
+                                                     width="20px" alt="facebook">
+                                            </a>
+                                        </div> <!-- facebook/Twitter icons -->
+                                        <div class="col d-flex">
+                                            <g:if test="${resourceObj instanceof linksharing.LinkResource}">
+                                                <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
+                                            </g:if>
+                                            <g:else>
+                                                <a class="ml-auto" href="">Download</a>
+                                            </g:else>
+                                            <a class="ml-4" href="">View post</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </g:if>
                         </g:each>
                     </g:else>
                 </div>

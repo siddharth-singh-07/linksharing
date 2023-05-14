@@ -2,6 +2,7 @@ package linksharing
 
 class TopicController {
     def TopicService
+    def ReadingItemService
 
     def index() { }
 
@@ -44,5 +45,12 @@ class TopicController {
             render status: 200, text: "success"
             return
         }
+    }
+
+    def showTopic(){   /*to display the topic show page*/
+        def topicId = params.id as Integer
+        Topic reqTopic= Topic.findById(params.id as Integer)
+        List readingItemList = ReadingItemService.getAllReadingItems(session.user)
+        render(view: 'topic', model: ['topicObj' : reqTopic, 'readingItemList': readingItemList, 'userSubscriptionsList': reqTopic])
     }
 }

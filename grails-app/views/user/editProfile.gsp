@@ -112,15 +112,11 @@
                                 </div>
 
                                 <div class="row ">
-                                    <div class="col pl-0">
-                                        <g:form controller="subscription" action="deleteSubscription">
-                                            <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                            <button type="submit" class="d-inline-block btn btn-link p-0"
-                                                    href="">Unsubscribe</button>
-                                        </g:form>
+                                    <div class="col pl-0 mr-4">
+
                                     </div>
 
-                                    <div class="col pl-0">
+                                    <div class="col pl-0 mr-2">
                                         <p class="text-muted mb-1">${topicObj.subscription.size()}</p>
                                     </div>
 
@@ -147,7 +143,7 @@
                                               id="seriousnessError_${topicObj.id}">Failed</span>
                                     </div>
 
-                                    <g:if test="${session.user.isAdmin || session.user.username == topicObj.createdBy}">
+                                    <g:if test="${session.user.isAdmin || session.user.username == topicObj.createdBy.username}">
                                         <div id="editVisibility_${topicObj.id}">
                                             %{--                                        <g:hiddenField name="topic" value="${topicObj.id}" />--}%
                                             <g:select name="visibilitySelect" from="${VisibilityEnum.values()}"
@@ -168,7 +164,7 @@
                                                  height="26em">
                                         </a>
                                     </button>
-                                    <g:if test="${session.user.isAdmin || session.user.username == topicObj.createdBy}">
+                                    <g:if test="${session.user.isAdmin || session.user.username == topicObj.createdBy.username}">
                                         <button type="button" class="btn btn-link p-1" id="topicEditButton"
                                                 onclick="editTopic('${topicObj.id}')">
                                             <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit" height="26em">

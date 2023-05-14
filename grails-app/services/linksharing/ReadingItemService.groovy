@@ -16,8 +16,8 @@ class ReadingItemService {
 
     }
 
-    def getReadingItems(User user){
-        List readingItemList= ReadingItem.createCriteria().list {
+    def getReadingItems(User user, def offsetInput){
+        List readingItemList= ReadingItem.createCriteria().list(max: 20, offset: offsetInput) {
             eq('user',user)
             eq('isRead', false)
         }
@@ -29,4 +29,13 @@ class ReadingItemService {
         obj.isRead=true
         obj.save(flush:true, failOnError:true)
     }
+
+    def getAllReadingItems(User user){
+        List readingItemList= ReadingItem.createCriteria().list {
+            eq('user',user)
+            eq('isRead', false)
+        }
+        return readingItemList
+    }
+
 }

@@ -67,4 +67,15 @@ class TopicService {
         return currTopic
     }
 
+    List trendingTopics(){
+        List trendingTopicsList = Resource.createCriteria().list() {
+            projections {
+                count("id", 'resourceCount')
+            }
+            groupProperty("topic")
+            order('resourceCount', 'desc')
+        }
+        return trendingTopicsList
+    }
+
 }
