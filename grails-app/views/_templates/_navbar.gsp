@@ -113,10 +113,11 @@
                     </button>
                 </div>
 
-                <div class="modal-body">
+            <div class="modal-body">
+                <g:form controller="topic" action="sendInvite" method="POST">
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalSendInvitationEmailInput">Email</label>
-                        <input type="text" id="modalSendInvitationEmailInput"
+                        <g:field type="text" id="modalSendInvitationEmailInput" name="invitationEmail"
                                class="form-control form-control-md"/>
                     </div>
 
@@ -125,13 +126,16 @@
                         <g:select id="modalSendInvitationTopicSelect" name="invitationTopic"
                                   from="${userSubscriptionsList}" optionKey="${{ it?.id }}"
                                   optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"/>
+                        <g:hiddenField name="invitationSender" value="${session.user?.username}"/>
+                        <g:hiddenField name="modal" value="navbar"/>
                     </div>
-                </div>
+                    </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Invite</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Invite</button>
+                    </div>
+                </g:form>
             </div>
         </div>
     </div>

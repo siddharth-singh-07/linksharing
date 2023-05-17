@@ -109,16 +109,13 @@ grails {
             }
         }
     }
-//    mail {
-//            host = "smtp.gmail.com"
-//            port = 465
-//            username = "nitin.nepalia@gmail.com"
-//            password = ""
-//            props = ["mail.smtp.auth":"true",
-//                     "mail.smtp.socketFactory.port":"465",
-//                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-//                     "mail.smtp.socketFactory.fallback":"false"]
-//    }
+    mail {
+        host = "smtp.office365.com"
+        port = 587
+        username = "no-reply.linksharing@outlook.com"
+        password = "linksharing@123"
+        props = ["mail.smtp.starttls.enable":"true"]
+    }
 
 }
 //In Config.groovy

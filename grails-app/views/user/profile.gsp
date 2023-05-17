@@ -398,7 +398,7 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5 p-1" style="border-radius: 15px;">
+            <div class="card mt-5 p-1 mb-5" style="border-radius: 15px;">
                 <h5 class="card-title m-2">Posts</h5>
 
                 <div class="card-body p-0">

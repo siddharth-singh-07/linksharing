@@ -16,12 +16,12 @@ class ReadingItemService {
 
     }
 
-    def getReadingItems(User user, def offsetInput){
-        List readingItemList= ReadingItem.createCriteria().list(max: 20, offset: offsetInput) {
+    def getPaginatedReadingItems(User user, def offsetInput){
+        List paginatedReadingItemList= ReadingItem.createCriteria().list(max: 10, offset: offsetInput) {
             eq('user',user)
             eq('isRead', false)
         }
-        return readingItemList
+        return paginatedReadingItemList
     }
 
     def markReadingItemRead(readingItemId){

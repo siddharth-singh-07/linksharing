@@ -110,9 +110,10 @@ class UserController {
     def dashboard() {
         List userSubscriptionsList = UserService.getUserSubscriptions(session.user)
         List userTopicsList = UserService.getUserTopics(session.user)
-        List readingItemList = ReadingItemService.getReadingItems(session.user, 0)
-        List trendingTopicsList= TopicService.trendingTopics()
-        render(view: 'dashboard', model: ['myObject': flash.object, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'readingItemList': readingItemList, 'trendingTopicsList' :trendingTopicsList])
+        List allReadingItemList = ReadingItemService.getAllReadingItems(session.user)
+        List paginatedReadingItemList= ReadingItemService.getPaginatedReadingItems(session.user, 0)
+        List trendingTopicsList = TopicService.trendingTopics()
+        render(view: 'dashboard', model: ['myObject': flash.object, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'allReadingItemList': allReadingItemList, 'paginatedReadingItemList': paginatedReadingItemList, 'trendingTopicsList': trendingTopicsList])
     }
 
 }

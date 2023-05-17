@@ -6,6 +6,7 @@
 <head>
     <meta name="layout" content="mymain">
     <title>Link Sharing - Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -79,7 +80,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="topicDisplay_${topicObj.id}" href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                                <a id="topicDisplay_${topicObj.id}"
+                                                   href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
 
                                                 <div id="topicField_${topicObj.id}" class="d-none">
                                                     <span id="error_${topicObj.id}"
@@ -206,7 +208,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="topicDisplay_${topicObj.id}" href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                                <a id="topicDisplay_${topicObj.id}"
+                                                   href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
 
                                                 <div id="topicField_${topicObj.id}" class="d-none">
                                                     <span id="error_${topicObj.id}"
@@ -337,7 +340,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="trendingTopicDisplay_${obj[1].id}" href="/topic/showTopic?id=${obj[1].id}">${obj[1].name}</a>
+                                                <a id="trendingTopicDisplay_${obj[1].id}"
+                                                   href="/topic/showTopic?id=${obj[1].id}">${obj[1].name}</a>
 
                                                 <div id="trendingTopicField_${obj[1].id}" class="d-none">
                                                     <span id="trendingError_${obj[1].id}"
@@ -390,7 +394,8 @@
                                             </div>
 
                                             <div class="col pl-0 mr-2">
-                                                <p id="subscriptionCount_${obj[1].id}" class="text-muted mb-1">${obj[1].subscription.size()}</p>
+                                                <p id="subscriptionCount_${obj[1].id}"
+                                                   class="text-muted mb-1">${obj[1].subscription.size()}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -465,60 +470,31 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <div class="card-body p-2 m-2">
                     <h5 class="card-title mb-4">Inbox</h5>
-                    <g:each in="${readingItemList}" var="readingItemObj">
-                        <div class="p-1 pb-3" id="div_${readingItemObj.id}">
-                            <div class="row">
-                                <div class="col pb-2 d-flex justify-content-between">
-                                    <div>
-                                        <span>${readingItemObj.resource.createdBy.firstName} ${readingItemObj.resource.createdBy.lastName}</span>
-                                        <span class="text-muted pl-2">@${readingItemObj.resource.createdBy.username}</span>
-                                    </div>
-                                    <a href="/topic/showTopic?id=${readingItemObj.resource.topic.id}">${readingItemObj.resource.topic.name}</a>
-                                </div>
 
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <p>${readingItemObj.resource.description}</p>
-                                </div>
-                            </div>
-
-                            <div class="row d-flex">
-                                <div class="col col-auto mr-auto">
-                                    <a class="mr-2" href="https://facebook.com">
-                                        <img src="${assetPath(src: 'icons/facebook-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                    <a class="mr-2" href="https://twitter.com">
-                                        <img src="${assetPath(src: 'icons/twitter-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                    <a href="https://google.com">
-                                        <img src="${assetPath(src: 'icons/google-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                </div> <!-- facebook/Twitter icons -->
-                                <div class="col d-flex">
-                                    <g:if test="${readingItemObj.resource instanceof linksharing.LinkResource}">
-                                        <a class="ml-auto "
-                                           href="http://${readingItemObj.resource.url}">View full site</a>
-                                    </g:if>
-                                    <g:else>
-                                        <a class="ml-auto" href="">Download</a>
-                                    </g:else>
-                                    <button class="ml-4 btn btn-link p-0"
-                                            onclick="markRead(${readingItemObj.id})">Mark as read</button>
-                                    <a class="ml-4" href="">View post</a>
-                                </div>
-                            </div>
-                        </div>
-                    </g:each>
+                    <div class="userInbox">
+                        <g:render template="/_templates/inbox"
+                                  model="['paginatedReadingItemList': paginatedReadingItemList]"/>
+                    </div>
                 </div>
+                <% int pageCount = allReadingItemList.size() / 10
+                pageCount = Math.max(pageCount, 1)
+                if (allReadingItemList.size() % 10 > 0) {
+                    pageCount++
+                }
+                %>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <g:each in="${1..pageCount}" var="num" status="i">
+                            <li class="page-item"><a class="page-link" href="#">${num}</a>
+                            </li>
+                        </g:each>
+                    </ul>
+                </nav>
             </div>
+
         </div>
     </div>
 </div>

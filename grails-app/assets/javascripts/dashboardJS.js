@@ -81,6 +81,7 @@ function updateSeriousness(topicId, seriousness) {
         }
     });
 }
+
 function markRead(readingItemId) {
     $.ajax({
         url: '/resource/markRead',
@@ -89,7 +90,7 @@ function markRead(readingItemId) {
             readingItemId: readingItemId
         },
         success: function (response) {
-            let myDiv= document.getElementById(`div_${readingItemId}`)
+            let myDiv = document.getElementById(`div_${readingItemId}`)
             myDiv.remove()
             // setTimeout(function () {
             //     document.getElementById(`seriousnessSuccess_${topicId}`).classList.add('d-none');
@@ -221,3 +222,23 @@ function subscribe(topicId, username) {
         }
     });
 }
+
+$(document).ready(function () {
+    $('.page-link').click(function () {
+        // $('.page-link').removeClass('active');
+        // $(this).addClass('active');
+
+        var pageNumber = $(this).text();
+        $.ajax({
+            url: '/readingItem/getNextReadingItemPage',
+            type: 'GET',
+            data: {page: pageNumber},
+            success: function (response) {
+                $('.userInbox').html(response);
+            },
+            error: function () {
+                // $('.userInbox').html("Error occurred while loading page");
+            }
+        });
+    });
+});
