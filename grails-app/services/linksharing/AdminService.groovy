@@ -19,7 +19,13 @@ class AdminService {
         User user= User.findByUsername(username)
         if(user){
             user.isActive = !user.isActive
-            user.save(flush:true, failOnError:true, validate:false)
+            try{
+                user.save(flush:true, failOnError:true, validate:false)
+            }
+            catch (e){
+                println e
+                return false
+            }
             return true
         }
         return false

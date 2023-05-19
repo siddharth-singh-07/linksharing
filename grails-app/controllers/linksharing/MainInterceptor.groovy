@@ -1,19 +1,22 @@
 package linksharing
 
 class MainInterceptor {
-     MainInterceptor(){
+    MainInterceptor() {
         matchAll().excludes(controller: 'home', action: "*")
-                .excludes(controller:'user', action:"authenticateUser")
-                .excludes(controller: "user", action:"registerUser")
+                .excludes(controller: 'user', action: "authenticateUser")
+                .excludes(controller: "user", action: "registerUser")
+                .excludes(controller: 'user', action: 'forgotPasswordTrigger')
+                .excludes(controller: 'search', index: "index")
+                .excludes(controller: 'resource', index: 'viewPost')
+                .excludes(controller: 'resourceRating', index: 'fetchCurrentRating')
     }
 
     boolean before() {
         if (!session.user) {
-            flash.warn= "Please login to access the application"
+            flash.warn = "Please login to access the application"
             redirect(controller: 'home')
             return false
-        }
-        else {
+        } else {
             return true
         }
     }

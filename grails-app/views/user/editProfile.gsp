@@ -99,7 +99,7 @@
 
                                 <div class="row">
                                     <div class="col pl-0">
-                                        <a class="text-muted" href="#">@${topicObj.createdBy.username}</a>
+                                        <p class="text-muted">@${topicObj.createdBy.username}</p>
                                     </div>
 
                                     <div class="col pl-0">
@@ -169,12 +169,9 @@
                                                 onclick="editTopic('${topicObj.id}')">
                                             <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit" height="26em">
                                         </button>
-                                        <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                data-target="#modalSendInvitation">
-                                            <a href="#">
-                                                <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                     height="26em">
-                                            </a>
+                                        <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                            <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                 height="26em">
                                         </button>
                                     </g:if>
                                 </div>

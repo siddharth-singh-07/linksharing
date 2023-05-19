@@ -437,9 +437,10 @@
                                             <a class="ml-auto" href="http://${resourceObj?.url}">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Download</a>
-                                        </g:else>
-                                        <a class="ml-4" href="">View post</a>
+                                            <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                    action="downloadResource"
+                                                    params='[resourceId: resourceObj.id]'>Download</g:link>                                        </g:else>
+                                        <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                     </div>
                                 </div>
                             </div>
@@ -481,9 +482,10 @@
                                             <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Download</a>
-                                        </g:else>
-                                        <a class="ml-4" href="">View post</a>
+                                            <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                    action="downloadResource"
+                                                    params='[resourceId: resourceObj.id]'>Download</g:link>                                        </g:else>
+                                        <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                     </div>
                                 </div>
                             </div>
@@ -524,9 +526,10 @@
                                                 <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
                                             </g:if>
                                             <g:else>
-                                                <a class="ml-auto" href="">Download</a>
-                                            </g:else>
-                                            <a class="ml-4" href="">View post</a>
+                                                <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                        action="downloadResource"
+                                                        params='[resourceId: resourceObj?.id]'>Download</g:link>                                            </g:else>
+                                            <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                         </div>
                                     </div>
                                 </div>

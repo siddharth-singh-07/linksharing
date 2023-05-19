@@ -96,7 +96,7 @@
                                                                 class="btn btn-primary btn-sm mr-2">Save</button>
                                                     </div>
                                                 </div>
-                                                <span id="success_${topicObj.id}"
+                                                <span id="success_${topicObj?.id}"
                                                       class="text-success small mt-2 d-none">Success</span>
                                             </div>
 
@@ -104,7 +104,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${topicObj.createdBy.username}</a>
+                                                <p class="text-muted">@${topicObj?.createdBy?.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -179,12 +179,9 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                             height="26em">
-                                                    </a>
+                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -232,7 +229,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${topicObj.createdBy.username}</a>
+                                                <p class="text-muted">@${topicObj.createdBy.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -305,12 +302,9 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                             height="26em">
-                                                    </a>
+                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -365,7 +359,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${obj[1].createdBy.username}</a>
+                                                <p class="text-muted">@${obj[1].createdBy.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -444,19 +438,16 @@
                                                          height="26em">
                                                 </a>
                                             </button>
-                                            <g:if test="${session.user.isAdmin || session.user.username == obj[1].createdBy.username}">
+                                            <g:if test="${session.user?.isAdmin || session.user?.username == obj[1]?.createdBy?.username}">
                                                 <button type="button" class="btn btn-link p-1"
                                                         id="trendingTopicEditButton"
-                                                        onclick="trendingEditTopic('${obj[1].id}')">
+                                                        onclick="trendingEditTopic('${obj[1]?.id}')">
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                             height="26em">
-                                                    </a>
+                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${obj[1]?.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -481,7 +472,7 @@
                 </div>
                 <% int pageCount = allReadingItemList.size() / 10
                 pageCount = Math.max(pageCount, 1)
-                if (allReadingItemList.size() % 10 > 0) {
+                if ((allReadingItemList.size() % 10 > 0) && allReadingItemList.size() > 10) {
                     pageCount++
                 }
                 %>

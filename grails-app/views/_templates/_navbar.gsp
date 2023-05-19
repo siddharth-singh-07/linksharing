@@ -10,7 +10,10 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <div class="d-flex input-group w-auto">
-                <input type="search" class="form-control mr-3" placeholder="Search"/>
+                <g:form controller="search" action="index" method="GET">
+                    <g:field type="search" class="form-control mr-3" placeholder="Search" name="searchQuery" id="searchInput"></g:field>
+                    <input type="submit" hidden="hidden">
+                </g:form>
                 <g:if test="${session.user}">
                     <g:if test="${page != 'profile'}">
                         <g:if test="${page != 'topicShow'}">
@@ -82,7 +85,7 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalCreateTopicNameInput">Name</label>
                             <g:field type="text" id="modalCreateTopicNameInput" name="modalCreateTopicNameInput"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">
@@ -90,7 +93,7 @@
                             </div>
                             <g:select id="modalCreateTopicVisibilitySelect" name="modalCreateTopicVisibilitySelect"
                                       from="${VisibilityEnum.values()}" optionKey="key"
-                                      class="form-select form-select-lg mb-3 form-control"/>
+                                      class="form-select form-select-lg mb-3 form-control" required="true"/>
                         </div>
                     </div>
 
@@ -118,14 +121,14 @@
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalSendInvitationEmailInput">Email</label>
                         <g:field type="text" id="modalSendInvitationEmailInput" name="invitationEmail"
-                               class="form-control form-control-md"/>
+                                 class="form-control form-control-md" required="true"/>
                     </div>
 
                     <div class="form-outline mb-3">
                         <div><label class="form-label" for="modalSendInvitationTopicSelect">Topic</label></div>
                         <g:select id="modalSendInvitationTopicSelect" name="invitationTopic"
                                   from="${userSubscriptionsList}" optionKey="${{ it?.id }}"
-                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"/>
+                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control" required="true"/>
                         <g:hiddenField name="invitationSender" value="${session.user?.username}"/>
                         <g:hiddenField name="modal" value="navbar"/>
                     </div>
@@ -173,7 +176,7 @@
                                       class="form-select form-select-lg mb-3 form-control"/>
                             <g:if test="${page == 'topicShow'}">
                                 <g:hiddenField name="modalShareLinkTopicSelect"
-                                               value="${userSubscriptionsList.id}"/>
+                                               value="${userSubscriptionsList?.id}"/>
                             </g:if>
                         </div>
                     </div>
@@ -217,7 +220,7 @@
                                   optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"/>
                         <g:if test="${page == 'topicShow'}">
                             <g:hiddenField name="modalShareDocTopicSelect"
-                                           value="${userSubscriptionsList.id}"/>
+                                           value="${userSubscriptionsList?.id}"/>
                         </g:if>
                     </div>
                     </div>
@@ -256,3 +259,15 @@
         </button>
     </div>
 </g:hasErrors>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                searchInput.form.submit();
+            }
+        });
+    });
+</script>

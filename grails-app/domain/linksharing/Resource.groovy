@@ -16,4 +16,10 @@ class Resource {
     static mapping = {
         table 'RESOURCE_TABLE'
     }
+
+    @Override
+    String toString() {
+        return "linkSharing.Resource"
+    }
+
 }

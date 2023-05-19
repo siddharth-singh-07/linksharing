@@ -1,7 +1,7 @@
 package linksharing
 
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailSender
+import org.springframework.mail.SimpleMailMessage
 
 class TopicController {
     MailSender mailSender
@@ -51,11 +51,12 @@ class TopicController {
 
     def showTopic() {   /*to display the topic show page*/
         def topicId = params.id as Integer
-        println topicId
-        println "----------------------------"
         Topic reqTopic = Topic.findById(topicId)
-        println reqTopic
-        println "---------------------------------------"
+        if(!reqTopic){
+            flash.warn= "Topic not found"
+            redirect(controller: 'user', action: 'dashboard')
+            return
+        }
         List readingItemList = ReadingItemService.getAllReadingItems(session.user)
         render(view: 'topic', model: ['topicObj': reqTopic, 'readingItemList': readingItemList, 'userSubscriptionsList': reqTopic])
     }
@@ -96,4 +97,16 @@ class TopicController {
             render(status: 200, text: "Invitation sent to ${email} for topic ${topic.name}")
         }
     }
+
+    def deleteTopic() {
+        Long topicId= params.topicId as Long
+        if (TopicService.deleteTopic(session.user?.username, topicId)) {
+            flash.message= "Topic deleted successfully"
+            render status: 200, text: 'Success'
+        } else {
+            flash.warn= "Topic deletion failed"
+            render status: 400, text: 'Failed'
+        }
+    }
+
 }

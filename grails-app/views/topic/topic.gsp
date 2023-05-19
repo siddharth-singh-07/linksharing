@@ -202,14 +202,16 @@
                                            href="http://${resourceObj.url}">View full site</a>
                                     </g:if>
                                     <g:else>
-                                        <a class="ml-auto" href="">Download</a>
+                                        <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                action="downloadResource"
+                                                params='[resourceId: resourceObj.id]'>Download</g:link>
                                     </g:else>
                                 <g:if test="${readingItemList.find{ it.user.username == session.user.username && it.resource.id == resourceObj.id && it.isRead==false}}">
                                     <% def currReadingItem = readingItemList.find{ it.user.username == session.user.username && it.resource.id == resourceObj.id} %>
                                     <button id="markReadBtn" class="ml-4 btn btn-link p-0"
                                             onclick="markRead(${currReadingItem.id})">Mark as read</button>
                                 </g:if>
-                                    <a class="ml-4" href="">View post</a>
+                                    <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                 </div>
                             </div>
                         </div>

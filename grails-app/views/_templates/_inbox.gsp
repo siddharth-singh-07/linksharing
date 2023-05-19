@@ -38,11 +38,13 @@
                        href="http://${readingItemObj.resource.url}">View full site</a>
                 </g:if>
                 <g:else>
-                    <a class="ml-auto" href="">Download</a>
+                    <g:link class="ml-2 mr-2 btn btn-link p-0 ml-auto" controller="resource"
+                            action="downloadResource"
+                            params='[resourceId: readingItemObj.resource.id]'>Download</g:link>
                 </g:else>
                 <button class="ml-4 btn btn-link p-0"
                         onclick="markRead(${readingItemObj.id})">Mark as read</button>
-                <a class="ml-4" href="">View post</a>
+                <a class="ml-4" href="/resource/viewPost?id=${readingItemObj.resource.id}">View post</a>
             </div>
         </div>
     </div>

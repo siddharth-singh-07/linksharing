@@ -86,10 +86,10 @@ grails {
     }
     controllers {
         defaultScope = 'singleton'
-//        upload{
-//            maxFileSize= 2000000
-//            maxRequestSize= 2000000
-//        }
+        upload {
+            maxFileSize = 2000000
+            maxRequestSize = 2000000
+        }
     }
     converters {
         encoding = 'UTF-8'
@@ -114,14 +114,14 @@ grails {
         port = 587
         username = "no-reply.linksharing@outlook.com"
         password = "linksharing@123"
-        props = ["mail.smtp.starttls.enable":"true"]
+        props = ["mail.smtp.starttls.enable": "true"]
     }
 
 }
 //In Config.groovy
-grails.plugins.remotepagination.max=20
+grails.plugins.remotepagination.max = 20
 //EnableBootstrap here when using twitter bootstrap, default is set to false.
-grails.plugins.remotepagination.enableBootstrap=true
+grails.plugins.remotepagination.enableBootstrap = true
 
 
 endpoints {
@@ -149,7 +149,7 @@ dataSource {
 environments {
     development {
         dataSource {
-            dbCreate = 'create'
+            dbCreate = 'update'
             url = 'jdbc:oracle:thin:@127.0.0.1:1521/orcl'
             username = 'linksharing'
             password = 'linksharing'

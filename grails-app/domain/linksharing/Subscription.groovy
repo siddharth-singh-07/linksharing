@@ -10,4 +10,9 @@ class Subscription {
 
     static constraints = {
     }
+
+    @Override
+    String toString() {
+        return "linkSharing.Subscription"
+    }
 }

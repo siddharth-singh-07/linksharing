@@ -41,9 +41,6 @@ class SubscriptionController {
         def targetCreator = targetTopic?.createdBy?.username
         def targetCreatorHash = targetCreator?.hashCode()
         def targetEmailHash = session.user?.email?.hashCode()
-        println topicId
-        println "=============================="
-
 
         if (!targetTopic) {
             flash.warn = "Topic does not exist"
