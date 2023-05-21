@@ -15,6 +15,7 @@ class Resource {
 
     static mapping = {
         table 'RESOURCE_TABLE'
+        description sqlType: "varchar(4000)"
     }
 
     @Override

@@ -11,7 +11,8 @@
         <ul class="nav navbar-nav navbar-right">
             <div class="d-flex input-group w-auto">
                 <g:form controller="search" action="index" method="GET">
-                    <g:field type="search" class="form-control mr-3" placeholder="Search" name="searchQuery" id="searchInput"></g:field>
+                    <g:field type="search" class="form-control mr-3" placeholder="Search" name="searchQuery"
+                             id="searchInput"></g:field>
                     <input type="submit" hidden="hidden">
                 </g:form>
                 <g:if test="${session.user}">
@@ -56,8 +57,8 @@
                                 <a class="dropdown-item" href="/user/editProfile">Profile</a>
                                 <g:if test="${session.user?.isAdmin}">
                                     <a class="dropdown-item" href="/admin/users">Users</a>
-                                    <a class="dropdown-item" href="#">Topics</a>
-                                    <a class="dropdown-item" href="#">Posts</a>
+                                    <a class="dropdown-item" href="/admin/topics">Topics</a>
+                                    <a class="dropdown-item" href="/admin/posts">Posts</a>
                                 </g:if>
 
                                 <g:link controller="User" action="logoutUser" class="dropdown-item">Log out</g:link>
@@ -121,14 +122,15 @@
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalSendInvitationEmailInput">Email</label>
                         <g:field type="text" id="modalSendInvitationEmailInput" name="invitationEmail"
-                                 class="form-control form-control-md" required="true"/>
+                                 class="form-control form-control-md" required="true" maxlength="254"/>
                     </div>
 
                     <div class="form-outline mb-3">
                         <div><label class="form-label" for="modalSendInvitationTopicSelect">Topic</label></div>
                         <g:select id="modalSendInvitationTopicSelect" name="invitationTopic"
                                   from="${userSubscriptionsList}" optionKey="${{ it?.id }}"
-                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control" required="true"/>
+                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"
+                                  required="true"/>
                         <g:hiddenField name="invitationSender" value="${session.user?.username}"/>
                         <g:hiddenField name="modal" value="navbar"/>
                     </div>
@@ -157,14 +159,15 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalShareLinkLinkInput">Link</label>
                             <g:field type="text" id="modalShareLinkLinkInput" name="modalShareLinkLinkInput"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalShareLinkDescriptionInput">Description</label>
                             <g:textArea type="" id="modalShareLinkDescriptionInput"
                                         name="modalShareLinkDescriptionInput"
-                                        class="form-control form-control-md" required="true"></g:textArea>
+                                        class="form-control form-control-md" required="true"
+                                        maxlength="3999"></g:textArea>
                         </div>
 
                         <div class="form-outline mb-3">
@@ -210,7 +213,7 @@
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalShareDocDescriptionInput">Description</label>
                         <textarea id="modalShareDocDescriptionInput" name="modalShareDocDescriptionInput"
-                                  class="form-control form-control-md" required="true"></textarea>
+                                  class="form-control form-control-md" required="true" maxlength="3999"></textarea>
                     </div>
 
                     <div class="form-outline mb-3">
@@ -226,7 +229,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Share</button>
+                        <button type="submit" class="btn btn-primary" onclick="return validateFile();">Share</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -260,14 +263,34 @@
     </div>
 </g:hasErrors>
 
+<div class="alert alert-danger alert-dismissible fade show pt-1 pb-1 d-none" id="error-nav">
+    <span id="errorMsg-nav"></span>
+    <button type="button" class="close pt-1 pb-1" data-dismiss="alert">
+        <span>&times;</span>
+    </button>
+</div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('keydown', function(event) {
+        searchInput.addEventListener('keydown', function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 searchInput.form.submit();
             }
         });
     });
+
+    function validateFile() {
+        var fileInput = document.getElementById("modalShareDocFileInput");
+        var maxSize = 10 * 1024 * 1024; // Maximum file size in bytes (e.g., 10MB)
+
+        var file = fileInput.files[0];
+        if (file && file.size > maxSize) {
+            document.getElementById("errorMsg-nav").textContent = "File size exceeds the limit.";
+            document.getElementById("error-nav").classList.remove('d-none');
+            return false;
+        }
+        return true;
+    }
 </script>

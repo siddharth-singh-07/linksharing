@@ -10,7 +10,8 @@ class UserService {
 
     }
 
-    List getUserSubscriptions(User user) {
+    List getUserSubscriptions(String username) {
+        User user= User.findByUsername(username)
         List userSubscriptionsList = Topic.createCriteria().listDistinct {
             subscription {
                 eq('user', user)

@@ -2,7 +2,7 @@
 <html lang="en">
 <%@ page import="enums.*" %>
 <head>
-%{--    <meta name="layout" content="mymain">--}%
+    %{--    <meta name="layout" content="mymain">--}%
     <title>Link Sharing - Post</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -120,14 +120,19 @@
                                         </a>
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
-                                        <button class="ml-auto  btn btn-link  p-0"
-                                                onclick="deleteResource('${resourceObj.id}', '${resourceObj.topic.id}')">Delete</button>
+                                        <g:if test="${resourceObj.createdBy.username == session.user.username || session.user.isAdmin}">
+                                            <button class="ml-auto  btn btn-link  p-0"
+                                                    onclick="deleteResource('${resourceObj.id}', '${resourceObj.topic.id}')">Delete</button>
+                                        </g:if>
+                                        <g:else>
+                                            <span class="ml-auto"></span>
+                                        </g:else>
 
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
                                             <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
                                                     data-target="#modalEditLink">Edit</button>
                                             <a class="ml-2 mr-2"
-                                               href="http://${resourceObj.url}">View full site</a>
+                                               href="https://${resourceObj.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
                                             <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
@@ -178,7 +183,7 @@
                                                                 <input type="text"
                                                                        class="form-control form-control-sm mr-2"
                                                                        id="trendingTopicInput_${obj[1].id}"
-                                                                       value="${obj[1].name}">
+                                                                       value="${obj[1].name}" maxlength="254">
                                                                 <button onclick="trendingCancelEdit('${obj[1].id}')"
                                                                         class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                                 <button onclick="trendingSaveEditTopic('${obj[1].id}')"
@@ -369,7 +374,7 @@
                                 <label class="form-label" for="modalShareDocDescriptionInput">Description</label>
                                 <g:textArea id="modalShareDocDescriptionInput" name="modalShareDocDescriptionInput"
                                             class="form-control form-control-md"
-                                            value="${resourceObj.description}"></g:textArea>
+                                            value="${resourceObj.description}" maxlength="3999"></g:textArea>
                             </div>
 
                             <div class="form-outline mb-3">

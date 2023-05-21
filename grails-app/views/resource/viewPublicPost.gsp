@@ -102,7 +102,7 @@
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
                                             <a class="ml-2 mr-2"
-                                               href="http://${resourceObj.url}">View full site</a>
+                                               href="https://${resourceObj.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
                                             <g:link class="ml-2 mr-2 btn btn-link p-0" controller="resource"
@@ -203,7 +203,7 @@
                                 <label class="form-label" for="modalShareLinkLinkInput">Link</label>
                                 <g:field type="text" id="modalShareLinkLinkInput" name="modalShareLinkLinkInput"
                                          value="${resourceObj.url}"
-                                         class="form-control form-control-md"/>
+                                         class="form-control form-control-md" maxlength="3999"/>
                             </div>
 
                             <div class="form-outline mb-3">
@@ -211,7 +211,7 @@
                                 <g:textArea type="" id="modalShareLinkDescriptionInput"
                                             name="modalShareLinkDescriptionInput"
                                             class="form-control form-control-md"
-                                            value="${resourceObj.description}"></g:textArea>
+                                            value="${resourceObj.description}" maxlength="3999"></g:textArea>
                             </div>
 
                             <div class="form-outline mb-3">

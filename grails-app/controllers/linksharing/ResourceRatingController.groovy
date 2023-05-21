@@ -8,7 +8,6 @@ class ResourceRatingController {
     def index() { }
 
     def fetchCurrentRating(){
-        println "heree"
         Long resourceId= params.id as Long
         def avgRating= ResourceRatingService.fetchRating(resourceId)
         def ratingResponse = [rating: Math.round(avgRating ?: 0)]

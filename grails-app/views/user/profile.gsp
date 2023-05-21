@@ -434,7 +434,7 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="http://${resourceObj?.url}">View full site</a>
+                                            <a class="ml-auto" href="${resourceObj?.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
                                             <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
@@ -479,7 +479,7 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
+                                            <a class="ml-auto" href="https://${resourceObj?.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
                                             <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
@@ -523,7 +523,7 @@
                                         </div> <!-- facebook/Twitter icons -->
                                         <div class="col d-flex">
                                             <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                                <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
+                                                <a class="ml-auto" href="https://${resourceObj?.url}" target="_blank">View full site</a>
                                             </g:if>
                                             <g:else>
                                                 <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"

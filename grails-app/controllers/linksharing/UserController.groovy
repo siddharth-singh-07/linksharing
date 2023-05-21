@@ -84,14 +84,14 @@ class UserController {
     def profile() {
         User targetUser = User.findByUsername(params.user)
 
-        List userSubscriptionsList = UserService.getUserSubscriptions(targetUser)
+        List userSubscriptionsList = UserService.getUserSubscriptions(targetUser.username)
         List userTopicsList = UserService.getUserTopics(targetUser)
         List userPublicPostsList = ResourceService.fetchUserPublicPosts(targetUser.username)
         render(view: 'profile', model: ['targetUser': targetUser, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'userPublicPostsList': userPublicPostsList])
     }
 
     def editProfile() {
-        List userSubscriptionsList = UserService.getUserSubscriptions(session.user)
+        List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         List userTopicsList = UserService.getUserTopics(session.user)
         render(view: 'editProfile', model: ['userTopicsList': userTopicsList, 'userSubscriptionsList': userSubscriptionsList])
     }
@@ -118,7 +118,7 @@ class UserController {
     }
 
     def dashboard() {
-        List userSubscriptionsList = UserService.getUserSubscriptions(session.user)
+        List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         List userTopicsList = UserService.getUserTopics(session.user)
         List allReadingItemList = ReadingItemService.getAllReadingItems(session.user)
         List paginatedReadingItemList = ReadingItemService.getPaginatedReadingItems(session.user, 0)
@@ -143,21 +143,22 @@ class UserController {
                             "Not you? Contact an administrator immediately!")
                     mailSender.send(message)
                     render status: 200, text: 'Success'
+                    return
                 }
                 catch (e) {
                     flash.warn = "Mail could not be sent"
                     println e
-                    render status: 200, text: 'Success'
-//                    redirect(controller: 'home', action: 'index')
-//                    return
+                    render status: 400, text: 'Mail not sent'
+                    return
                 }
             } else {
                 flash.warn = "Your account is disabled, contact administrator"
-                redirect(controller: 'home', action: 'index')
+                render status: 400, text: 'Failed'
+                return
             }
         } else {
             flash.warn = "Account does not exist"
-            redirect(controller: 'home', action: 'index')
+            render status: 400, text: 'Failed'
         }
     }
 
@@ -166,7 +167,7 @@ class UserController {
         Long hash = params.forgotPasswordKey as Long
         def newPass = params.newPassword
         def user = User.findByUsernameOrEmail(usr, usr)
-        def targetHash = user.email.hashCode()
+        def targetHash = user.username.hashCode()
         if (hash == targetHash) {
             user.password = newPass
             try {
@@ -174,7 +175,9 @@ class UserController {
             }
             catch (e) {
                 flash.warn = e
+                println e
             }
+            flash.message = "Password changed successfully, please login with new password"
             render status: 200, text: 'Success'
         }
         flash.warn = "Verification failed"

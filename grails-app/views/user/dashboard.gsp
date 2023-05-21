@@ -62,9 +62,41 @@
                 </div>
             </div> <!-- User information card-->
 
+            <div class="modal fade" id="modalViewSubs" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subscriptions</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="container ">
+                            <ul class="list-group m-4 align-content-center">
+                                <g:if test="${userSubscriptionsList.isEmpty()}">
+                                    <span class="text-muted">Nothing to show</span>
+                                </g:if>
+                                <g:each in="${userSubscriptionsList}" var="topicObj">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a class="text-dark"
+                                           href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                        <span class="badge badge-primary badge-pill">${topicObj.subscription.size()}</span>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <div class="card-body p-2 ">
-                    <h5 class="card-title m-2">Subscriptions</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-2 pb-2 d-inline">Subscriptions</h5>
+                        <button class="btn btn-link ml-auto" data-toggle="modal"
+                                data-target="#modalViewSubs">View all</button>
+                    </div>
 
                     <g:each in="${userSubscriptionsList}" var="topicObj">
                         <g:if test="${topicObj && (topicObj.resource && count < 5)}">
@@ -89,7 +121,8 @@
 
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
-                                                               id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                               maxlength="254" id="topicInput_${topicObj.id}"
+                                                               value="${topicObj.name}">
                                                         <button onclick="cancelEdit('${topicObj.id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="saveEditTopic('${topicObj.id}')"
@@ -179,7 +212,8 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${topicObj.id}')">
                                                     <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
                                                          height="26em">
                                                 </button>
@@ -214,7 +248,8 @@
 
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
-                                                               id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                               maxlength="254" id="topicInput_${topicObj.id}"
+                                                               value="${topicObj.name}">
                                                         <button onclick="cancelEdit('${topicObj.id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="saveEditTopic('${topicObj.id}')"
@@ -302,7 +337,8 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${topicObj.id}')">
                                                     <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
                                                          height="26em">
                                                 </button>
@@ -344,7 +380,7 @@
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
                                                                id="trendingTopicInput_${obj[1].id}"
-                                                               value="${obj[1].name}">
+                                                               value="${obj[1].name}" maxlength="254">
                                                         <button onclick="trendingCancelEdit('${obj[1].id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="trendingSaveEditTopic('${obj[1].id}')"
@@ -445,7 +481,8 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${obj[1]?.id}')">
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${obj[1]?.id}')">
                                                     <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
                                                          height="26em">
                                                 </button>
@@ -476,14 +513,16 @@
                     pageCount++
                 }
                 %>
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        <g:each in="${1..pageCount}" var="num" status="i">
-                            <li class="page-item"><a class="page-link" href="#">${num}</a>
-                            </li>
-                        </g:each>
-                    </ul>
-                </nav>
+                <g:if test="${!allReadingItemList.isEmpty()}">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <g:each in="${1..pageCount}" var="num" status="i">
+                                <li class="page-item"><a class="page-link" href="#">${num}</a>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </nav>
+                </g:if>
             </div>
 
         </div>

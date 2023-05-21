@@ -15,7 +15,7 @@
         <div class="col-md-4 col-lg-4 col-xl-4">
 
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
-                <div class="card-body p-2">
+                <div class="card-body p-3">
                     <h5 class="card-title m-2 mb-4">Trending Topics</h5>
                     <% def trendingCount = 0 %>
                     <g:each in="${trendingTopicsList}" var="obj">
@@ -42,7 +42,7 @@
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
                                                                id="trendingTopicInput_${obj[1].id}"
-                                                               value="${obj[1].name}">
+                                                               value="${obj[1].name}" maxlength="254">
                                                         <button onclick="trendingCancelEdit('${obj[1].id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="trendingSaveEditTopic('${obj[1].id}')"
@@ -164,7 +164,7 @@
             </div> <!-- Trending Topics Card -->
 
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
-                <div class="card-body p-2 ">
+                <div class="card-body p-3 ">
                     <h5 class="card-title m-2">Top Posts</h5>
                     <g:each in="${topPostsList}" var="obj">
                         <div class="row">
@@ -208,7 +208,7 @@
                             <div class="col d-flex">
                                 <g:if test="${obj[1] instanceof linksharing.LinkResource}">
                                     <a class="ml-auto "
-                                       href="http://${obj[1]?.url}">View full site</a>
+                                       href="${obj[1]?.url}" target="_blank">View full site</a>
                                 </g:if>
                                 <g:else>
                                     <g:link class="mr-2 btn btn-link p-0 ml-auto" controller="resource"
@@ -268,7 +268,7 @@
                                 <div class="col d-flex">
                                     <g:if test="${resourceObj instanceof linksharing.LinkResource}">
                                         <a class="ml-auto "
-                                           href="http://${resourceObj?.url}">View full site</a>
+                                           href="https://${resourceObj?.url}" target="_blank">View full site</a>
                                     </g:if>
                                     <g:else>
                                         <g:link class="mr-2 btn btn-link p-0 ml-auto" controller="resource"

@@ -37,6 +37,13 @@ endpoints {
 }
 
 grails {
+    plugin {
+        cacheControlHeaders {
+            defaults {
+                cacheControl = 'no-store, no-cache, must-revalidate, max-age=0'
+            }
+        }
+    }
     mime {
         disable {
             accept {
@@ -87,8 +94,8 @@ grails {
     controllers {
         defaultScope = 'singleton'
         upload {
-            maxFileSize = 2000000
-            maxRequestSize = 2000000
+            maxFileSize = 20000000
+            maxRequestSize = 20000000
         }
     }
     converters {

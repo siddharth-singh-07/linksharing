@@ -11,6 +11,7 @@
     /*    height: 2px;*/
     /*    background: #eee;*/
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -42,7 +43,7 @@
 
                                         <div class="col d-flex">
                                             <div class="ml-auto mr-5"><a class="justify-content-end"
-                                                                         href="">${it?.topic?.name}</a>
+                                                                         href="/topic/showTopic?id=${it?.topic?.id}">${it?.topic?.name}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -163,13 +164,13 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="signInUsername">Email or Username</label>
                             <g:field type="text" id="signInUsername" value="${user?.username}" name="signInUsername"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="signInPass">Password</label>
                             <g:field type="password" id="signInPass" name="signInPass"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center pt-4">
@@ -193,54 +194,54 @@
             <div class="card mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body">
                     <h4 class="card-title">Sign Up</h4>
-                    <g:uploadForm controller="User" action="registerUser" method="POST">
+                    <g:uploadForm controller="User" action="registerUser" method="POST" id="signUpForm">
                         <div class="form-outline mb-3">
                             <label class="form-label" for="firstName">First name</label>
                             <g:field type="text" name="firstName" id="firstName" value="${newUser?.firstName}"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="lastName">Last name</label>
                             <g:field type="text" name="lastName" id="lastName" value="${newUser?.lastName}"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="email">Email</label>
                             <g:field type="email" name="email" id="email" value="${newUser?.email}"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="username">Username</label>
                             <g:field type="text" name="username" id="username" value="${newUser?.username}"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3 ">
                             <label class="form-label" for="password">Password</label>
                             <g:field type="password" name="password" id="password"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="cnfPassword">Confirm Password</label>
                             <span id="pswdText" class="text-danger d-none">Password does not match</span>
                             <g:field type="password" onkeyup="checkPass()" class="form-control" id="cnfPassword"
-                                     name="cnfPassword" required="true"></g:field>
+                                     name="cnfPassword" required="true" maxlength="254"></g:field>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="photo">Photo</label>
-                            <g:field type="file" name="photo" id="photo" class="form-control" accept="image/*"/>
+                            <g:field type="file" name="photo" id="photo" class="form-control" accept=".jpg, .jpeg, .png"/>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center pt-4">
                             <div>
                             </div>
 
-                            <button type="submit" id="btnSubmit" class="btn btn-outline-primary"
+                            <button type="submit" id="btnSubmit" onclick="return validateFile();" class="btn btn-outline-primary"
                                     style="padding: 0.7rem 1.7rem 0.7rem 1.7rem;">Sign Up</button>
                         </div>
                     </g:uploadForm>
@@ -264,19 +265,19 @@
                 <div class="form-outline mb-3" id="oneEmail">
                     <label class="form-label" for="forgotPasswordEmail">Email/Username</label>
                     <g:field type="text" id="forgotPasswordEmail" name="forgotPasswordEmail"
-                             class="form-control form-control-md"/>
+                             class="form-control form-control-md" maxlength="254"/>
                 </div>
 
                 <div class="form-outline mb-3 d-none" id="twoKey">
                     <label class="form-label" for="forgotPasswordKey">Enter key sent on your registered email</label>
-                    <input type="text" id="forgotPasswordKey" name="forgotPasswordKey"
-                           class="form-control form-control-md" required>
+                    <input type="password" id="forgotPasswordKey" name="forgotPasswordKey"
+                           class="form-control form-control-md" required maxlength="254">
                 </div>
 
                 <div class="form-outline mb-3 d-none" id="twoPass">
                     <label class="form-label" for="forgotPasswordNewPass">New Password</label>
-                    <input type="text" id="forgotPasswordNewPass" name="forgotPasswordNewPass"
-                           class="form-control form-control-md" required>
+                    <input type="password" id="forgotPasswordNewPass" name="forgotPasswordNewPass"
+                           class="form-control form-control-md" required maxlength="254">
                 </div>
 
                 <div class="modal-footer" id="oneButtons">

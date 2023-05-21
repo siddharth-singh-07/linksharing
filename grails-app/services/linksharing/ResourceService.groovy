@@ -14,7 +14,7 @@ class ResourceService {
             topic {
                 eq('VISIBILITY', VisibilityEnum.PUBLIC)
             }
-            order('dateCreated', 'asc')
+            order('dateCreated', 'desc')
             maxResults(5)
         }
         return recentSharesList
@@ -34,7 +34,7 @@ class ResourceService {
     Resource createLinkResource(params) {
         Resource linkResource = new LinkResource()
         linkResource.url = params.modalShareLinkLinkInput
-        linkResource.description = params.modalShareLinkDescriptionInput.take(255)
+        linkResource.description = params.modalShareLinkDescriptionInput
         linkResource.createdBy = params.user
         linkResource.topic = Topic.findById(params.modalShareLinkTopicSelect)
 
@@ -54,7 +54,7 @@ class ResourceService {
 
     Resource createDocumentResource(params) {
         Resource documentResource = new DocumentResource()
-        documentResource.description = params.modalShareDocDescriptionInput.take(255)
+        documentResource.description = params.modalShareDocDescriptionInput
         documentResource.createdBy = params.user
         documentResource.topic = Topic.findById(params.modalShareDocTopicSelect)
 
@@ -96,6 +96,8 @@ class ResourceService {
         User user = User.findByUsername(username)
 
         if (!user.isAdmin && (resource.createdBy.username != user.username)) {
+            return false
+        } else if (!resource) {
             return false
         }
 

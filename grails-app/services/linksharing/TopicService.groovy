@@ -103,6 +103,9 @@ class TopicService {
         if (!user.isAdmin && (topic.createdBy.username != user.username)) {
             return false
         }
+        else if(!topic){
+            return false
+        }
 
         def resources = topic.resource
         def subscriptions = topic.subscription

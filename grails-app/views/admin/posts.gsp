@@ -28,25 +28,29 @@
     <table id="allUsersTable" class="table-striped table-hover">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Visibility</th>
+            <th>Topic</th>
+            <th>Description</th>
             <th>createdBy</th>
             <th>Manage</th>
         </tr>
         </thead>
         <tbody>
-        <g:each in="${allTopicsList}" var="topicObj">
+        <g:each in="${allPostsList}" var="resourceObj">
             <tr>
                 <td>
-                    <a href="http://localhost:9090/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
-                </td>
-                <td>${topicObj.VISIBILITY}</td>
-                <td>
-                    <a href="/user/profile?user=${topicObj.createdBy.username}">${topicObj.createdBy.username}</a>
+                    <a href="http://localhost:9090/topic/showTopic?id=${resourceObj.topic.id}">${resourceObj.topic.name}</a>
                 </td>
                 <td>
-                    <g:link class="btn btn-link" controller="admin" action="deleteTopic"
-                            params='[topicId: topicObj.id]'>Delete</g:link>
+                    <a class="text-dark"
+                       href="http://localhost:9090/resource/viewPost?id=${resourceObj.id}">${resourceObj.description.take(70)}</a>
+                    <a href="http://localhost:9090/resource/viewPost?id=${resourceObj.id}">. . .</a>
+                </td>
+                <td>
+                    <a href="/user/profile?user=${resourceObj.createdBy.username}">${resourceObj.createdBy.username}</a>
+                </td>
+                <td>
+                    <g:link class="btn btn-link" controller="admin" action="deletePost"
+                            params='[resourceId: resourceObj.id]'>Delete</g:link>
                 </td>
             </tr>
         </g:each>

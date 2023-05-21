@@ -15,6 +15,18 @@ class AdminService {
         return allUsers
     }
 
+    List fetchTopics() {
+        List allTopics = Topic.createCriteria().list {
+        }
+        return allTopics
+    }
+
+    List fetchPosts() {
+        List allPosts = Resource.createCriteria().list {
+        }
+        return allPosts
+    }
+
     boolean changeUserStatus(username){
         User user= User.findByUsername(username)
         if(user){

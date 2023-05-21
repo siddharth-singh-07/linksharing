@@ -1,3 +1,6 @@
+<g:if test="${allReadingItemList.isEmpty()}">
+    <span class="text-muted">Nothing to show</span>
+</g:if>
 <g:each in="${paginatedReadingItemList}" var="readingItemObj">
     <div class="p-1 pb-3" id="div_${readingItemObj.id}">
         <div class="row">
@@ -35,7 +38,7 @@
             <div class="col d-flex">
                 <g:if test="${readingItemObj.resource instanceof linksharing.LinkResource}">
                     <a class="ml-auto "
-                       href="http://${readingItemObj.resource.url}">View full site</a>
+                       href="https://${readingItemObj.resource.url}" target="_blank">View full site</a>
                 </g:if>
                 <g:else>
                     <g:link class="ml-2 mr-2 btn btn-link p-0 ml-auto" controller="resource"

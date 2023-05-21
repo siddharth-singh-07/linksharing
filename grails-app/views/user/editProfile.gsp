@@ -84,7 +84,7 @@
 
                                             <div class="form-outline d-flex align-items-center">
                                                 <input type="text" class="form-control form-control-sm mr-2"
-                                                       id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                       maxlength="254" id="topicInput_${topicObj.id}" value="${topicObj.name}">
                                                 <button onclick="cancelEdit('${topicObj.id}')"
                                                         class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                 <button onclick="saveEditTopic('${topicObj.id}')"
@@ -194,7 +194,7 @@
 
                             <div class="col">
                                 <g:field type="text" value="${session.user.firstName}" id="firstName"
-                                         class="form-control" name="firstName" required="true"></g:field>
+                                         class="form-control" name="firstName" required="true" maxlength="254"></g:field>
                             </div>
                         </div>
 
@@ -205,7 +205,7 @@
 
                             <div class="col">
                                 <g:field type="text" value="${session.user.lastName}" class="form-control" id="lastName"
-                                         name="lastName" required="true"></g:field>
+                                         name="lastName" required="true" maxlength="254"></g:field>
                             </div>
                         </div>
 
@@ -253,7 +253,7 @@
 
                             <div class="col">
                                 <g:field type="password" id="password"
-                                         class="form-control" name="password"></g:field>
+                                         class="form-control" name="password" maxlength="254"></g:field>
                             </div>
                         </div>
 

@@ -30,19 +30,15 @@ function forgotPassword() {
             document.getElementById('oneButtons').classList.add('d-none')
         },
         error: function (xhr, status, error) {
-            console.log(error)
+            window.location.reload()
         }
     });
 }
 
 function setNewPassword() {
     let forgotPasswordEmail = document.getElementById('forgotPasswordEmail').value
-    console.log(forgotPasswordEmail)
     let forgotPasswordKey = document.getElementById('forgotPasswordKey').value
-    console.log(forgotPasswordKey)
-
     let newPassword = document.getElementById('forgotPasswordNewPass').value
-    console.log(newPassword)
 
 
     $.ajax({
@@ -57,7 +53,20 @@ function setNewPassword() {
             window.location.reload()
         },
         error: function (xhr, status, error) {
-            console.log(error)
+            window.location.reload()
         }
     });
 }
+
+    function validateFile() {
+        var fileInput = document.getElementById("photo");
+        var maxSize = 10 * 1024 * 1024; // Maximum file size in bytes (e.g., 10MB)
+
+        var file = fileInput.files[0];
+        if (file && file.size > maxSize) {
+            document.getElementById("errorMsg-nav").textContent = "File size exceeds the limit.";
+            document.getElementById("error-nav").classList.remove('d-none');
+            return false;
+        }
+        return true;
+    }
