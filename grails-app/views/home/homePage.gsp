@@ -194,7 +194,7 @@
             <div class="card mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body">
                     <h4 class="card-title">Sign Up</h4>
-                    <g:uploadForm controller="User" action="registerUser" method="POST" id="signUpForm">
+                    <g:uploadForm controller="User" action="registerUser" method="POST">
                         <div class="form-outline mb-3">
                             <label class="form-label" for="firstName">First name</label>
                             <g:field type="text" name="firstName" id="firstName" value="${newUser?.firstName}"
@@ -234,14 +234,16 @@
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="photo">Photo</label>
-                            <g:field type="file" name="photo" id="photo" class="form-control" accept=".jpg, .jpeg, .png"/>
+                            <g:field type="file" name="photo" id="photo" class="form-control"
+                                     accept=".jpg, .jpeg, .png"/>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center pt-4">
                             <div>
                             </div>
 
-                            <button type="submit" id="btnSubmit" onclick="return validateFile();" class="btn btn-outline-primary"
+                            <button type="submit" id="btnSubmit" onclick="return validateFile();"
+                                    class="btn btn-outline-primary"
                                     style="padding: 0.7rem 1.7rem 0.7rem 1.7rem;">Sign Up</button>
                         </div>
                     </g:uploadForm>

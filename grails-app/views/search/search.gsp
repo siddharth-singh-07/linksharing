@@ -132,14 +132,16 @@
                                                     </div>
 
                                                 </g:if>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/mail.png')}"
-                                                             alt="Send Invitation"
-                                                             height="26em">
-                                                    </a>
-                                                </button>
+                                                <g:if test="${obj[1].subscription.find { it.user.username == session.user.username }}">
+                                                    <button type="button" class="btn btn-link p-1" data-toggle="modal"
+                                                            data-target="#modalSendInvitation">
+                                                        <a href="#">
+                                                            <img src="${assetPath(src: 'icons/mail.png')}"
+                                                                 alt="Send Invitation"
+                                                                 height="26em">
+                                                        </a>
+                                                    </button>
+                                                </g:if>
                                                 <g:if test="${session.user?.isAdmin || session.user?.username == obj[1]?.createdBy?.username}">
                                                     <button type="button" class="btn btn-link p-1"
                                                             id="trendingTopicEditButton"
@@ -173,6 +175,7 @@
                                         src="${assetPath(src: "${obj[1].createdBy.photo}")}" width="70px"
                                         height="70px"/></a>
                             </div>
+
                             <div class="col">
                                 <div class="row">
                                     <div class="col-auto text-left">
@@ -190,6 +193,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row d-flex mb-4 mt-2">
                             <div class="col col-auto mr-auto">
                                 <a class="mr-2" href="https://facebook.com">

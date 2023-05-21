@@ -19,27 +19,27 @@
                     <g:if test="${page != 'profile'}">
                         <g:if test="${page != 'topicShow'}">
                             <button type="button" class="btn btn-link" data-toggle="modal"
-                                    data-target="#modalCreateTopic">
+                                    data-target="#modalCreateTopic" title="Create Topic">
                                 <a href="#">
                                     <img src="${assetPath(src: 'icons/message.png')}" alt="Create Topic" height="25em">
                                 </a>
                             </button>
 
                             <button type="button" class="btn btn-link" data-toggle="modal"
-                                    data-target="#modalSendInvitation">
+                                    data-target="#modalSendInvitation" title="Send Invite">
                                 <a href="#">
                                     <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation" height="26em">
                                 </a>
                             </button>
                         </g:if>
 
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareLink">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareLink" title="Share Link">
                             <a href="#">
                                 <img src="${assetPath(src: 'icons/link.png')}" alt="Create Resource Link" height="20em">
                             </a>
                         </button>
 
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareDoc">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareDoc" title="Share Document">
                             <a href="#">
                                 <img src="${assetPath(src: 'icons/file.png')}" alt="Create Resource File" height="24em">
                             </a>

@@ -258,3 +258,12 @@ function deleteTopic(topicId) {
         }
     });
 }
+document.addEventListener('DOMContentLoaded', function () {
+    var searchInput = document.getElementById('inboxSearchInput');
+    searchInput.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            searchInput.form.submit();
+        }
+    });
+});

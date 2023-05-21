@@ -199,6 +199,7 @@
                                                 </div>
 
                                             </g:if>
+
                                             <button type="button" class="btn btn-link p-1" data-toggle="modal"
                                                     data-target="#modalSendInvitation">
                                                 <a href="#">
@@ -467,13 +468,16 @@
                                                 </div>
 
                                             </g:if>
-                                            <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                    data-target="#modalSendInvitation">
-                                                <a href="#">
-                                                    <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation"
-                                                         height="26em">
-                                                </a>
-                                            </button>
+                                            <g:if test="${obj[1].subscription.find { it.user.username == session.user.username }}">
+                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
+                                                        data-target="#modalSendInvitation">
+                                                    <a href="#">
+                                                        <img src="${assetPath(src: 'icons/mail.png')}"
+                                                             alt="Send Invitation"
+                                                             height="26em">
+                                                    </a>
+                                                </button>
+                                            </g:if>
                                             <g:if test="${session.user?.isAdmin || session.user?.username == obj[1]?.createdBy?.username}">
                                                 <button type="button" class="btn btn-link p-1"
                                                         id="trendingTopicEditButton"
@@ -500,7 +504,11 @@
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <div class="card-body p-2 m-2">
-                    <h5 class="card-title mb-4">Inbox</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-2 pb-2 d-inline">Inbox</h5>
+                        <g:field type="search" class="form-control ml-auto w-25" placeholder="Search" name="inboxSearchQuery"
+                                 id="inboxSearchInput"></g:field>
+                    </div>
 
                     <div class="userInbox">
                         <g:render template="/_templates/inbox"

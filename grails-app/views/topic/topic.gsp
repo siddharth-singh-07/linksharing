@@ -66,7 +66,7 @@
                                     </div>
 
                                     <div class="col pl-0">
-                                        <p class="text-muted mb-1">${topicObj.subscription.size()}</p>
+                                        <p class="text-muted mb-1" id="subscriptionCount_${topicObj.id}">${topicObj.subscription.size()}</p>
                                     </div>
 
                                     <div class="col pl-0">

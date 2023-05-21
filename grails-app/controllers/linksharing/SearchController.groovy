@@ -9,9 +9,11 @@ class SearchController {
 
     def index() {
         List trendingTopicsList = TopicService.trendingTopics()
+        List readingItemList
+        List userSubscriptionsList
         if (session.user) {
-            List readingItemList = ReadingItemService.getAllReadingItems(session.user)
-            List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
+            readingItemList = ReadingItemService.getAllReadingItems(session.user)
+            userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         }
         List searchResultsList = SearchService.searchResults(params.searchQuery)
         def topPostsList = ResourceRatingService.topPosts()
@@ -33,7 +35,7 @@ class SearchController {
 
         if (params.searchQuery.trim() == "" && (!session.user || !session.user?.isAdmin)) {
             flash.warn = "Can not search with empty input"
-            render(view: 'search', model: ['trendingTopicsList': trendingTopicsList, 'searchQuery': params.searchQuery, 'readingItemList': readingItemList, 'userSubscriptionsList': userSubscriptionsList, 'topPostsList': topPosts])
+            render(view: 'search', model: ['trendingTopicsList': trendingTopicsList, 'searchQuery': params.searchQuery, 'topPostsList': topPosts])
         } else {
             if(session.user){
                 render(view: 'search', model: ['trendingTopicsList': trendingTopicsList, 'searchResultsList': searchResults, 'searchQuery': params.searchQuery, 'readingItemList': readingItemList, 'userSubscriptionsList': userSubscriptionsList, 'topPostsList': topPosts])

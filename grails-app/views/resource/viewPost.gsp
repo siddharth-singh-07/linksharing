@@ -129,21 +129,24 @@
                                         </g:else>
 
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
-                                                    data-target="#modalEditLink">Edit</button>
+                                            <g:if test="${resourceObj.createdBy.username == session.user.username || session.user.isAdmin}">
+                                                <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
+                                                        data-target="#modalEditLink">Edit</button>
+                                            </g:if>
                                             <a class="ml-2 mr-2"
                                                href="https://${resourceObj.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
-                                                    data-target="#modalEditDoc">Edit</button>
+                                            <g:if test="${resourceObj.createdBy.username == session.user.username || session.user.isAdmin}">
+                                                <button class="ml-2 btn btn-link  p-0" data-toggle="modal"
+                                                        data-target="#modalEditDoc">Edit</button>
+                                            </g:if>
                                             <g:link class="ml-2 mr-2 btn btn-link p-0" controller="resource"
                                                     action="downloadResource"
                                                     params='[resourceId: resourceObj.id]'>Download</g:link>
                                         </g:else>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -272,14 +275,17 @@
                                                         </div>
 
                                                     </g:if>
-                                                    <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                            data-target="#modalSendInvitation">
-                                                        <a href="#">
-                                                            <img src="${assetPath(src: 'icons/mail.png')}"
-                                                                 alt="Send Invitation"
-                                                                 height="26em">
-                                                        </a>
-                                                    </button>
+                                                    <g:if test="${obj[1].subscription.find { it.user.username == session.user?.username }}">
+                                                        <button type="button" class="btn btn-link p-1"
+                                                                data-toggle="modal"
+                                                                data-target="#modalSendInvitation">
+                                                            <a href="#">
+                                                                <img src="${assetPath(src: 'icons/mail.png')}"
+                                                                     alt="Send Invitation"
+                                                                     height="26em">
+                                                            </a>
+                                                        </button>
+                                                    </g:if>
                                                     <g:if test="${session.user?.isAdmin || session.user?.username == obj[1].createdBy.username}">
                                                         <button type="button" class="btn btn-link p-1"
                                                                 id="trendingTopicEditButton"

@@ -60,7 +60,6 @@
                 </div>
             </div>
 
-
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <h5 class="card-title m-2">Topics</h5>
 
@@ -84,7 +83,8 @@
 
                                             <div class="form-outline d-flex align-items-center">
                                                 <input type="text" class="form-control form-control-sm mr-2"
-                                                       maxlength="254" id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                       maxlength="254" id="topicInput_${topicObj.id}"
+                                                       value="${topicObj.name}">
                                                 <button onclick="cancelEdit('${topicObj.id}')"
                                                         class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                 <button onclick="saveEditTopic('${topicObj.id}')"
@@ -169,7 +169,8 @@
                                                 onclick="editTopic('${topicObj.id}')">
                                             <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit" height="26em">
                                         </button>
-                                        <button type="button" class="btn btn-link p-1" onclick="deleteTopic('${topicObj.id}')">
+                                        <button type="button" class="btn btn-link p-1"
+                                                onclick="deleteTopic('${topicObj.id}')">
                                             <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
                                                  height="26em">
                                         </button>
@@ -194,7 +195,8 @@
 
                             <div class="col">
                                 <g:field type="text" value="${session.user.firstName}" id="firstName"
-                                         class="form-control" name="firstName" required="true" maxlength="254"></g:field>
+                                         class="form-control" name="firstName" required="true"
+                                         maxlength="254"></g:field>
                             </div>
                         </div>
 
@@ -274,7 +276,8 @@
                             </div>
 
                             <div class="col">
-                                <button id="pswdSubmit" type="submit" class="btn btn-outline-primary disabled" disabled>Update</button>
+                                <button id="pswdSubmit" type="submit" class="btn btn-outline-primary disabled"
+                                        disabled>Update</button>
                             </div>
                         </div>
                     </g:uploadForm>
