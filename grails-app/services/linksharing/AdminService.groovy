@@ -15,11 +15,29 @@ class AdminService {
         return allUsers
     }
 
+    List fetchTopics() {
+        List allTopics = Topic.createCriteria().list {
+        }
+        return allTopics
+    }
+
+    List fetchPosts() {
+        List allPosts = Resource.createCriteria().list {
+        }
+        return allPosts
+    }
+
     boolean changeUserStatus(username){
         User user= User.findByUsername(username)
         if(user){
             user.isActive = !user.isActive
-            user.save(flush:true, failOnError:true, validate:false)
+            try{
+                user.save(flush:true, failOnError:true, validate:false)
+            }
+            catch (e){
+                println e
+                return false
+            }
             return true
         }
         return false

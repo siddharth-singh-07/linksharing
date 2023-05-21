@@ -21,4 +21,9 @@ class Topic {
             }
         }
     }
+
+    @Override
+    String toString() {
+        return "linkSharing.Topic"
+    }
 }

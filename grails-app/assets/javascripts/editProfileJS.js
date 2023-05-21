@@ -101,3 +101,18 @@ function saveEditTopic(topicId) {
         }
     });
 }
+function deleteTopic(topicId) {
+    $.ajax({
+        url: '/topic/deleteTopic',
+        type: 'POST',
+        data: {
+            topicId: topicId,
+        },
+        success: function (response) {
+            window.location.reload()
+        },
+        error: function (xhr, status, error) {
+            window.location.reload()
+        }
+    });
+}

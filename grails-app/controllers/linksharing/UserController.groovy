@@ -1,6 +1,10 @@
 package linksharing
 
+import org.springframework.mail.MailSender
+import org.springframework.mail.SimpleMailMessage
+
 class UserController {
+    MailSender mailSender
     def TopicService
     def UserService
     def ResourceService
@@ -58,7 +62,13 @@ class UserController {
             } else {
                 newUser.photo = 'userUploads/user.png'
             }
-            newUser.save(flush: true, failOnError: true)
+            try {
+                newUser.save(flush: true, failOnError: true)
+            }
+            catch (e) {
+                println e.message
+                return
+            }
             flash.message = "Registration successful, Please sign in!"
             redirect(controller: 'home')
         }
@@ -74,14 +84,14 @@ class UserController {
     def profile() {
         User targetUser = User.findByUsername(params.user)
 
-        List userSubscriptionsList = UserService.getUserSubscriptions(targetUser)
+        List userSubscriptionsList = UserService.getUserSubscriptions(targetUser.username)
         List userTopicsList = UserService.getUserTopics(targetUser)
         List userPublicPostsList = ResourceService.fetchUserPublicPosts(targetUser.username)
         render(view: 'profile', model: ['targetUser': targetUser, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'userPublicPostsList': userPublicPostsList])
     }
 
     def editProfile() {
-        List userSubscriptionsList = UserService.getUserSubscriptions(session.user)
+        List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         List userTopicsList = UserService.getUserTopics(session.user)
         render(view: 'editProfile', model: ['userTopicsList': userTopicsList, 'userSubscriptionsList': userSubscriptionsList])
     }
@@ -108,11 +118,70 @@ class UserController {
     }
 
     def dashboard() {
-        List userSubscriptionsList = UserService.getUserSubscriptions(session.user)
+        List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         List userTopicsList = UserService.getUserTopics(session.user)
-        List readingItemList = ReadingItemService.getReadingItems(session.user, 0)
-        List trendingTopicsList= TopicService.trendingTopics()
-        render(view: 'dashboard', model: ['myObject': flash.object, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'readingItemList': readingItemList, 'trendingTopicsList' :trendingTopicsList])
+        List allReadingItemList = ReadingItemService.getAllReadingItems(session.user)
+        List paginatedReadingItemList = ReadingItemService.getPaginatedReadingItems(session.user, 0)
+        List trendingTopicsList = TopicService.trendingTopics()
+        render(view: 'dashboard', model: ['myObject': flash.object, 'userSubscriptionsList': userSubscriptionsList, 'userTopicsList': userTopicsList, 'allReadingItemList': allReadingItemList, 'paginatedReadingItemList': paginatedReadingItemList, 'trendingTopicsList': trendingTopicsList])
+    }
+
+    def forgotPasswordTrigger() {
+        def usr = params.forgotPasswordEmail
+        def user = User.findByUsernameOrEmail(usr, usr)
+        if (user) {
+            if (user.isActive) {
+                def email = user.email
+                def userHash = user.username.hashCode()
+                try {
+                    def message = new SimpleMailMessage()
+                    message.setFrom('no-reply.linksharing@outlook.com')
+                    message.setTo(email)
+                    message.setSubject("Reset password")
+                    message.setText("We have received a request to reset your password for your account on linkSharing.\n " +
+                            "Please enter the key= ${userHash} \n" + "\n" +
+                            "Not you? Contact an administrator immediately!")
+                    mailSender.send(message)
+                    render status: 200, text: 'Success'
+                    return
+                }
+                catch (e) {
+                    flash.warn = "Mail could not be sent"
+                    println e
+                    render status: 400, text: 'Mail not sent'
+                    return
+                }
+            } else {
+                flash.warn = "Your account is disabled, contact administrator"
+                render status: 400, text: 'Failed'
+                return
+            }
+        } else {
+            flash.warn = "Account does not exist"
+            render status: 400, text: 'Failed'
+        }
+    }
+
+    def resetPassword() {
+        def usr = params.forgotPasswordEmail
+        Long hash = params.forgotPasswordKey as Long
+        def newPass = params.newPassword
+        def user = User.findByUsernameOrEmail(usr, usr)
+        def targetHash = user.username.hashCode()
+        if (hash == targetHash) {
+            user.password = newPass
+            try {
+                user.save(flush: true, validate: false)
+            }
+            catch (e) {
+                flash.warn = e
+                println e
+            }
+            flash.message = "Password changed successfully, please login with new password"
+            render status: 200, text: 'Success'
+        }
+        flash.warn = "Verification failed"
+        render status: 400, text: 'Failed'
     }
 
 }

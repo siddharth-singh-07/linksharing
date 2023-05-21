@@ -1,107 +1,3 @@
-function editTopic(topicId) {
-    // Show the edit input field
-    document.getElementById(`topicField_${topicId}`).classList.remove('d-none');
-
-    // Hide the display field
-    document.getElementById(`topicDisplay_${topicId}`).classList.add('d-none');
-}
-
-function cancelEdit(topicId) {
-    // Hide the edit field
-    document.getElementById(`topicField_${topicId}`).classList.add('d-none');
-
-    // Show the display field
-    document.getElementById(`topicDisplay_${topicId}`).classList.remove('d-none');
-}
-
-function saveEditTopic(topicId) {
-    let newName = document.getElementById(`topicInput_${topicId}`).value;
-    $.ajax({
-        url: '/topic/editTopicName',
-        type: 'POST',
-        data: {
-            topicId: topicId,
-            newTopicName: newName
-        },
-        success: function (response) {
-            // Hide the edit field
-            document.getElementById(`topicField_${topicId}`).classList.add('d-none');
-            // Show the display field
-            document.getElementById(`topicDisplay_${topicId}`).innerText = newName
-            document.getElementById(`topicDisplay_${topicId}`).classList.remove('d-none');
-            document.getElementById(`success_${topicId}`).classList.remove('d-none')
-            setTimeout(function () {
-                document.getElementById(`success_${topicId}`).classList.add('d-none');
-            }, 3000);
-        },
-        error: function (xhr, status, error) {
-            document.getElementById(`error_${topicId}`).textContent = "You already have a topic with this name";
-            document.getElementById(`error_${topicId}`).classList.remove('d-none')
-        }
-    });
-}
-
-function updateVisibility(topicId, visibility) {
-    $.ajax({
-        url: '/topic/editVisibility',
-        type: 'POST',
-        data: {
-            topic: topicId,
-            visibilitySelect: visibility
-        },
-        success: function (response) {
-            document.getElementById(`visibilitySuccess_${topicId}`).classList.remove('d-none')
-            setTimeout(function () {
-                document.getElementById(`visibilitySuccess_${topicId}`).classList.add('d-none');
-            }, 3000);
-
-        },
-        error: function (xhr, status, error) {
-            document.getElementById(`visibilityError_${topicId}`).classList.remove('d-none')
-        }
-    });
-}
-
-function updateSeriousness(topicId, seriousness) {
-    $.ajax({
-        url: '/subscription/editSeriousness',
-        type: 'POST',
-        data: {
-            topic: topicId,
-            seriousnessSelect: seriousness
-        },
-        success: function (response) {
-            document.getElementById(`seriousnessSuccess_${topicId}`).classList.remove('d-none');
-            setTimeout(function () {
-                document.getElementById(`seriousnessSuccess_${topicId}`).classList.add('d-none');
-            }, 3000);
-        },
-        error: function (xhr, status, error) {
-            document.getElementById(`seriousnessError_${topicId}`).classList.remove('d-none');
-        }
-    });
-}
-
-function markRead(readingItemId) {
-    $.ajax({
-        url: '/resource/markRead',
-        type: 'POST',
-        data: {
-            readingItemId: readingItemId
-        },
-        success: function (response) {
-            let myDiv = document.getElementById(`div_${readingItemId}`)
-            myDiv.remove()
-            // setTimeout(function () {
-            //     document.getElementById(`seriousnessSuccess_${topicId}`).classList.add('d-none');
-            // }, 3000);
-        },
-        error: function (xhr, status, error) {
-            document.getElementById(`seriousnessError_${topicId}`).classList.remove('d-none');
-        }
-    });
-}
-
 function trendingEditTopic(topicId) {
     // Show the edit input field
     document.getElementById(`trendingTopicField_${topicId}`).classList.remove('d-none');
@@ -223,27 +119,74 @@ function subscribe(topicId, username) {
     });
 }
 
-$(document).ready(function () {
-    $('.page-link').click(function () {
-        // $('.page-link').removeClass('active');
-        // $(this).addClass('active');
+var rating = 5;
 
-        var pageNumber = $(this).text();
-        $.ajax({
-            url: '/readingItem/getNextReadingItemPage',
-            type: 'GET',
-            data: {page: pageNumber},
-            success: function (response) {
-                $('.userInbox').html(response);
-            },
-            error: function () {
-                // $('.userInbox').html("Error occurred while loading page");
-            }
-        });
+function fetchRating() {
+    $.ajax({
+        url: '/resourceRating/fetchCurrentRating',
+        data: {
+            id: resourceId,
+        },
+        type: 'GET',
+        success: function (response) {
+            rating = response.rating;
+            showFilled(rating);
+        }
     });
-});
+}
 
-function deleteTopic(topicId) {
+$(document).ready(fetchRating());
+
+function resetRating() {
+    let stars = document.getElementById('ratingStars').children
+    for (let i = 0; i < 5; i++) {
+        stars[i].classList.remove('checked')
+    }
+}
+
+function showFilled(num) {
+    resetRating()
+    let stars = document.getElementById('ratingStars').children
+    for (let i = 0; i < num; i++) {
+        stars[i].classList.add('checked')
+    }
+    document.getElementById('ratingDisplay').innerText = `${rating} of 5`
+}
+
+function mouseOut() {
+    showFilled(rating)
+}
+
+function ratingSelect(num) {
+    $.ajax({
+        url: '/resourceRating/addRating',
+        type: 'POST',
+        data: {
+            id: resourceId,
+            score: num
+        },
+        success: function (response) {
+            fetchRating();
+            showFilled(rating);
+            document.getElementById('ratingResult').classList.add('text-success')
+            document.getElementById('ratingResult').innerText = response
+            setTimeout(function () {
+                document.getElementById('ratingResult').classList.add('d-none');
+            }, 3000);
+        },
+        error: function (xhr, status, error) {
+            fetchRating();
+            showFilled(rating);
+            document.getElementById('ratingResult').classList.add('text-danger')
+            document.getElementById('ratingResult').innerText = error
+            setTimeout(function () {
+                document.getElementById('ratingResult').classList.add('d-none');
+            }, 3000);
+        }
+    });
+}
+
+function deleteTopic(topicId, resourceTopicId) {
     $.ajax({
         url: '/topic/deleteTopic',
         type: 'POST',
@@ -251,19 +194,46 @@ function deleteTopic(topicId) {
             topicId: topicId,
         },
         success: function (response) {
-            window.location.reload()
+            if (topicId == resourceTopicId) {
+                window.location.href = `/user/dashboard`
+            } else {
+                window.location.reload()
+            }
         },
         error: function (xhr, status, error) {
             window.location.reload()
         }
     });
 }
-document.addEventListener('DOMContentLoaded', function () {
-    var searchInput = document.getElementById('inboxSearchInput');
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            searchInput.form.submit();
+
+function deleteResource(resourceId, topicId) {
+    $.ajax({
+        url: '/resource/deleteResource',
+        type: 'POST',
+        data: {
+            resourceId: resourceId,
+        },
+        success: function (response) {
+            window.location.href = `/topic/showTopic?id=${topicId}`
+        },
+        error: function (xhr, status, error) {
+            window.location.reload()
         }
     });
-});
+}
+
+// function downloadFile(resourceId) {
+//     $.ajax({
+//         url: '/resource/downloadResource',
+//         type: 'GET',
+//         data: {
+//             resourceId: resourceId,
+//         },
+//         success: function (response) {
+//             console.log("File download initiated successfully");
+//         },
+//         error: function (xhr, status, error) {
+//             console.error("File download failed:", error);
+//         }
+//     });
+// }

@@ -8,4 +8,9 @@ class DocumentResource extends Resource{
         filePath blank: false, nullable: false
         description blank: false, nullable: false
     }
+
+    @Override
+    String toString() {
+        return "linkSharing.DocumentResource"
+    }
 }

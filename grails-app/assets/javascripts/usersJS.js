@@ -1,5 +1,16 @@
 $(document).ready(function () {
     $('#allUsersTable').DataTable();
+    var myTable = $("#allUsersTable").DataTable({
+    });
+    $('<select>')
+        .appendTo(myTable.column(5).header())
+        .on('change', function () {
+            var selectedValue = $(this).val();
+            myTable.column(5).search(selectedValue).draw();
+        })
+        .append($('<option>', {value: '', text: 'All'})) // Add an option for all values
+        .append($('<option>', {value: 'Yes', text: 'Active'})) // Add options for specific values
+        .append($('<option>', {value: 'No', text: 'Inactive'}));
 });
 
 function changeUserStatus(username) {

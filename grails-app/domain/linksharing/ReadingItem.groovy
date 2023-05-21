@@ -8,4 +8,9 @@ class ReadingItem {
 
     static constraints = {
     }
+
+    @Override
+    String toString() {
+        return "linkSharing.ReadingItem"
+    }
 }

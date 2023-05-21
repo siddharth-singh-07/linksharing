@@ -7,5 +7,11 @@ class ResourceRating {
     static belongsTo = [resource: Resource, user: User]
 
     static constraints = {
+
+    }
+
+    @Override
+    String toString() {
+        return "linkSharing.ResourceRating"
     }
 }

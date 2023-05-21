@@ -9,4 +9,8 @@ class LinkResource extends Resource{
         description blank: false, nullable: false
 
     }
+    @Override
+    String toString() {
+        return "linkSharing.LinkResource"
+    }
 }

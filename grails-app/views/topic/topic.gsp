@@ -47,24 +47,26 @@
 
                                 <div class="row ">
                                     <div class="col pl-0">
-                                        <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
-                                            <g:if test="${topicObj.createdBy.username != session.user.username}">
-                                                <g:form controller="subscription" action="deleteSubscription">
-                                                    <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                                    <button type="submit"
-                                                            class="d-inline-block btn btn-link p-0">Unsubscribe</button>
-                                                </g:form>
+                                        <g:if test="${session.user}">
+                                            <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
+                                                <g:if test="${topicObj.createdBy.username != session.user.username}">
+                                                    <g:form controller="subscription" action="deleteSubscription">
+                                                        <g:hiddenField name="topic" value="${topicObj.id}"/>
+                                                        <button type="submit"
+                                                                class="d-inline-block btn btn-link p-0">Unsubscribe</button>
+                                                    </g:form>
+                                                </g:if>
                                             </g:if>
+                                            <g:else>
+                                                <span class="d-none" id="message_${topicObj.id}"></span>
+                                                <button id="subscribeBtn_${topicObj.id}" class="pl-2 btn btn-link"
+                                                        onclick="subscribe('${topicObj.id}', '${session.user?.username}')">Subscribe</button>
+                                            </g:else>
                                         </g:if>
-                                        <g:else>
-                                            <span class="d-none" id="message_${topicObj.id}"></span>
-                                            <button id="subscribeBtn_${topicObj.id}" class="pl-2 btn btn-link"
-                                                    onclick="subscribe('${topicObj.id}', '${session.user?.username}')">Subscribe</button>
-                                        </g:else>
                                     </div>
 
                                     <div class="col pl-0">
-                                        <p class="text-muted mb-1">${topicObj.subscription.size()}</p>
+                                        <p class="text-muted mb-1" id="subscriptionCount_${topicObj.id}">${topicObj.subscription.size()}</p>
                                     </div>
 
                                     <div class="col pl-0">
@@ -76,34 +78,36 @@
                         <div class="row">
 
                             <div class="col">
-                                <div class="form-inline flex-wrap-nowrap justify-content-end pr-5">
-                                    <div id="editSeriousness_${topicObj.id}">
+                                <g:if test="${session.user}">
+                                    <div class="form-inline flex-wrap-nowrap justify-content-end pr-5">
+                                        <div id="editSeriousness_${topicObj.id}">
+                                            <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
+                                                <div id="editSeriousness_${topicObj.id}">
+                                                    %{--                                    <g:hiddenField name="topic" value="${topicObj.id}" />--}%
+                                                    <g:select name="seriousnessSelect_${topicObj.id}"
+                                                              from="${SeriousnessEnum.values()}"
+                                                              onchange="updateSeriousness('${topicObj.id}', this.value)"
+                                                              optionKey="key"
+                                                              value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
+                                                              class="form-select m-1"/>
+                                                    <span class="text-success d-none"
+                                                          id="seriousnessSuccess_${topicObj.id}">Success</span>
+                                                    <span class="text-danger d-none"
+                                                          id="seriousnessError_${topicObj.id}">Failed</span>
+                                                </div>
+                                            </g:if>
+                                        </div>
                                         <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
-                                            <div id="editSeriousness_${topicObj.id}">
-                                                %{--                                    <g:hiddenField name="topic" value="${topicObj.id}" />--}%
-                                                <g:select name="seriousnessSelect_${topicObj.id}"
-                                                          from="${SeriousnessEnum.values()}"
-                                                          onchange="updateSeriousness('${topicObj.id}', this.value)"
-                                                          optionKey="key"
-                                                          value="${topicObj.subscription.find { it.user.username == session.user.username }?.SERIOUSNESS}"
-                                                          class="form-select m-1"/>
-                                                <span class="text-success d-none"
-                                                      id="seriousnessSuccess_${topicObj.id}">Success</span>
-                                                <span class="text-danger d-none"
-                                                      id="seriousnessError_${topicObj.id}">Failed</span>
-                                            </div>
+                                            <button type="button" class="btn btn-link p-1" data-toggle="modal"
+                                                    data-target="#modalSendInvitation">
+                                                <a href="#">
+                                                    <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation"
+                                                         height="26em">
+                                                </a>
+                                            </button>
                                         </g:if>
                                     </div>
-                                    <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
-                                        <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                data-target="#modalSendInvitation">
-                                            <a href="#">
-                                                <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation"
-                                                     height="26em">
-                                            </a>
-                                        </button>
-                                    </g:if>
-                                </div>
+                                </g:if>
                             </div>
                         </div>
                     </div>
@@ -199,17 +203,21 @@
                                 <div class="col d-flex">
                                     <g:if test="${resourceObj instanceof linksharing.LinkResource}">
                                         <a class="ml-auto "
-                                           href="http://${resourceObj.url}">View full site</a>
+                                           href="https://${resourceObj.url}" target="_blank">View full site</a>
                                     </g:if>
                                     <g:else>
-                                        <a class="ml-auto" href="">Download</a>
+                                        <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                action="downloadResource"
+                                                params='[resourceId: resourceObj.id]'>Download</g:link>
                                     </g:else>
-                                <g:if test="${readingItemList.find{ it.user.username == session.user.username && it.resource.id == resourceObj.id && it.isRead==false}}">
-                                    <% def currReadingItem = readingItemList.find{ it.user.username == session.user.username && it.resource.id == resourceObj.id} %>
-                                    <button id="markReadBtn" class="ml-4 btn btn-link p-0"
-                                            onclick="markRead(${currReadingItem.id})">Mark as read</button>
-                                </g:if>
-                                    <a class="ml-4" href="">View post</a>
+                                    <g:if test="${session.user}">
+                                        <g:if test="${readingItemList.find { it.user.username == session.user.username && it.resource.id == resourceObj.id && it.isRead == false }}">
+                                            <% def currReadingItem = readingItemList.find { it.user.username == session.user.username && it.resource.id == resourceObj.id } %>
+                                            <button id="markReadBtn" class="ml-4 btn btn-link p-0"
+                                                    onclick="markRead(${currReadingItem.id})">Mark as read</button>
+                                        </g:if>
+                                    </g:if>
+                                    <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                 </div>
                             </div>
                         </div>

@@ -37,6 +37,13 @@ endpoints {
 }
 
 grails {
+    plugin {
+        cacheControlHeaders {
+            defaults {
+                cacheControl = 'no-store, no-cache, must-revalidate, max-age=0'
+            }
+        }
+    }
     mime {
         disable {
             accept {
@@ -86,10 +93,10 @@ grails {
     }
     controllers {
         defaultScope = 'singleton'
-//        upload{
-//            maxFileSize= 2000000
-//            maxRequestSize= 2000000
-//        }
+        upload {
+            maxFileSize = 20000000
+            maxRequestSize = 20000000
+        }
     }
     converters {
         encoding = 'UTF-8'
@@ -109,22 +116,19 @@ grails {
             }
         }
     }
-//    mail {
-//            host = "smtp.gmail.com"
-//            port = 465
-//            username = "nitin.nepalia@gmail.com"
-//            password = ""
-//            props = ["mail.smtp.auth":"true",
-//                     "mail.smtp.socketFactory.port":"465",
-//                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-//                     "mail.smtp.socketFactory.fallback":"false"]
-//    }
+    mail {
+        host = "smtp.office365.com"
+        port = 587
+        username = "no-reply.linksharing@outlook.com"
+        password = "linksharing@123"
+        props = ["mail.smtp.starttls.enable": "true"]
+    }
 
 }
 //In Config.groovy
-grails.plugins.remotepagination.max=20
+grails.plugins.remotepagination.max = 20
 //EnableBootstrap here when using twitter bootstrap, default is set to false.
-grails.plugins.remotepagination.enableBootstrap=true
+grails.plugins.remotepagination.enableBootstrap = true
 
 
 endpoints {
@@ -152,7 +156,7 @@ dataSource {
 environments {
     development {
         dataSource {
-            dbCreate = 'create'
+            dbCreate = 'update'
             url = 'jdbc:oracle:thin:@127.0.0.1:1521/orcl'
             username = 'linksharing'
             password = 'linksharing'

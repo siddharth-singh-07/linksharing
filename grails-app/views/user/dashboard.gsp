@@ -6,6 +6,7 @@
 <head>
     <meta name="layout" content="mymain">
     <title>Link Sharing - Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -61,9 +62,41 @@
                 </div>
             </div> <!-- User information card-->
 
+            <div class="modal fade" id="modalViewSubs" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subscriptions</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="container ">
+                            <ul class="list-group m-4 align-content-center">
+                                <g:if test="${userSubscriptionsList.isEmpty()}">
+                                    <span class="text-muted">Nothing to show</span>
+                                </g:if>
+                                <g:each in="${userSubscriptionsList}" var="topicObj">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a class="text-dark"
+                                           href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                        <span class="badge badge-primary badge-pill">${topicObj.subscription.size()}</span>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <div class="card-body p-2 ">
-                    <h5 class="card-title m-2">Subscriptions</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-2 pb-2 d-inline">Subscriptions</h5>
+                        <button class="btn btn-link ml-auto" data-toggle="modal"
+                                data-target="#modalViewSubs">View all</button>
+                    </div>
 
                     <g:each in="${userSubscriptionsList}" var="topicObj">
                         <g:if test="${topicObj && (topicObj.resource && count < 5)}">
@@ -79,7 +112,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="topicDisplay_${topicObj.id}" href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                                <a id="topicDisplay_${topicObj.id}"
+                                                   href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
 
                                                 <div id="topicField_${topicObj.id}" class="d-none">
                                                     <span id="error_${topicObj.id}"
@@ -87,14 +121,15 @@
 
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
-                                                               id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                               maxlength="254" id="topicInput_${topicObj.id}"
+                                                               value="${topicObj.name}">
                                                         <button onclick="cancelEdit('${topicObj.id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="saveEditTopic('${topicObj.id}')"
                                                                 class="btn btn-primary btn-sm mr-2">Save</button>
                                                     </div>
                                                 </div>
-                                                <span id="success_${topicObj.id}"
+                                                <span id="success_${topicObj?.id}"
                                                       class="text-success small mt-2 d-none">Success</span>
                                             </div>
 
@@ -102,7 +137,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${topicObj.createdBy.username}</a>
+                                                <p class="text-muted">@${topicObj?.createdBy?.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -164,6 +199,7 @@
                                                 </div>
 
                                             </g:if>
+
                                             <button type="button" class="btn btn-link p-1" data-toggle="modal"
                                                     data-target="#modalSendInvitation">
                                                 <a href="#">
@@ -177,12 +213,10 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                             height="26em">
-                                                    </a>
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${topicObj.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -206,7 +240,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="topicDisplay_${topicObj.id}" href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                                <a id="topicDisplay_${topicObj.id}"
+                                                   href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
 
                                                 <div id="topicField_${topicObj.id}" class="d-none">
                                                     <span id="error_${topicObj.id}"
@@ -214,7 +249,8 @@
 
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
-                                                               id="topicInput_${topicObj.id}" value="${topicObj.name}">
+                                                               maxlength="254" id="topicInput_${topicObj.id}"
+                                                               value="${topicObj.name}">
                                                         <button onclick="cancelEdit('${topicObj.id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="saveEditTopic('${topicObj.id}')"
@@ -229,7 +265,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${topicObj.createdBy.username}</a>
+                                                <p class="text-muted">@${topicObj.createdBy.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -302,12 +338,10 @@
                                                     <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
                                                          height="26em">
                                                 </button>
-                                                <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                        data-target="#modalSendInvitation">
-                                                    <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
-                                                             height="26em">
-                                                    </a>
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${topicObj.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -337,7 +371,8 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a id="trendingTopicDisplay_${obj[1].id}" href="/topic/showTopic?id=${obj[1].id}">${obj[1].name}</a>
+                                                <a id="trendingTopicDisplay_${obj[1].id}"
+                                                   href="/topic/showTopic?id=${obj[1].id}">${obj[1].name}</a>
 
                                                 <div id="trendingTopicField_${obj[1].id}" class="d-none">
                                                     <span id="trendingError_${obj[1].id}"
@@ -346,7 +381,7 @@
                                                     <div class="form-outline d-flex align-items-center">
                                                         <input type="text" class="form-control form-control-sm mr-2"
                                                                id="trendingTopicInput_${obj[1].id}"
-                                                               value="${obj[1].name}">
+                                                               value="${obj[1].name}" maxlength="254">
                                                         <button onclick="trendingCancelEdit('${obj[1].id}')"
                                                                 class="btn btn-secondary btn-sm mr-2">Cancel</button>
                                                         <button onclick="trendingSaveEditTopic('${obj[1].id}')"
@@ -361,7 +396,7 @@
 
                                         <div class="row">
                                             <div class="col pl-0">
-                                                <a class="text-muted" href="#">@${obj[1].createdBy.username}</a>
+                                                <p class="text-muted">@${obj[1].createdBy.username}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -390,7 +425,8 @@
                                             </div>
 
                                             <div class="col pl-0 mr-2">
-                                                <p id="subscriptionCount_${obj[1].id}" class="text-muted mb-1">${obj[1].subscription.size()}</p>
+                                                <p id="subscriptionCount_${obj[1].id}"
+                                                   class="text-muted mb-1">${obj[1].subscription.size()}</p>
                                             </div>
 
                                             <div class="col pl-0">
@@ -432,26 +468,27 @@
                                                 </div>
 
                                             </g:if>
-                                            <button type="button" class="btn btn-link p-1" data-toggle="modal"
-                                                    data-target="#modalSendInvitation">
-                                                <a href="#">
-                                                    <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation"
-                                                         height="26em">
-                                                </a>
-                                            </button>
-                                            <g:if test="${session.user.isAdmin || session.user.username == obj[1].createdBy.username}">
-                                                <button type="button" class="btn btn-link p-1"
-                                                        id="trendingTopicEditButton"
-                                                        onclick="trendingEditTopic('${obj[1].id}')">
-                                                    <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
-                                                         height="26em">
-                                                </button>
+                                            <g:if test="${obj[1].subscription.find { it.user.username == session.user.username }}">
                                                 <button type="button" class="btn btn-link p-1" data-toggle="modal"
                                                         data-target="#modalSendInvitation">
                                                     <a href="#">
-                                                        <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                        <img src="${assetPath(src: 'icons/mail.png')}"
+                                                             alt="Send Invitation"
                                                              height="26em">
                                                     </a>
+                                                </button>
+                                            </g:if>
+                                            <g:if test="${session.user?.isAdmin || session.user?.username == obj[1]?.createdBy?.username}">
+                                                <button type="button" class="btn btn-link p-1"
+                                                        id="trendingTopicEditButton"
+                                                        onclick="trendingEditTopic('${obj[1]?.id}')">
+                                                    <img src="${assetPath(src: 'icons/edit.png')}" alt="Edit"
+                                                         height="26em">
+                                                </button>
+                                                <button type="button" class="btn btn-link p-1"
+                                                        onclick="deleteTopic('${obj[1]?.id}')">
+                                                    <img src="${assetPath(src: 'icons/delete.png')}" alt="delete"
+                                                         height="26em">
                                                 </button>
                                             </g:if>
                                         </div>
@@ -465,60 +502,37 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5" style="border-radius: 15px;">
                 <div class="card-body p-2 m-2">
-                    <h5 class="card-title mb-4">Inbox</h5>
-                    <g:each in="${readingItemList}" var="readingItemObj">
-                        <div class="p-1 pb-3" id="div_${readingItemObj.id}">
-                            <div class="row">
-                                <div class="col pb-2 d-flex justify-content-between">
-                                    <div>
-                                        <span>${readingItemObj.resource.createdBy.firstName} ${readingItemObj.resource.createdBy.lastName}</span>
-                                        <span class="text-muted pl-2">@${readingItemObj.resource.createdBy.username}</span>
-                                    </div>
-                                    <a href="/topic/showTopic?id=${readingItemObj.resource.topic.id}">${readingItemObj.resource.topic.name}</a>
-                                </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title m-2 pb-2 d-inline">Inbox</h5>
+                        <g:field type="search" class="form-control ml-auto w-25" placeholder="Search" name="inboxSearchQuery"
+                                 id="inboxSearchInput"></g:field>
+                    </div>
 
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <p>${readingItemObj.resource.description}</p>
-                                </div>
-                            </div>
-
-                            <div class="row d-flex">
-                                <div class="col col-auto mr-auto">
-                                    <a class="mr-2" href="https://facebook.com">
-                                        <img src="${assetPath(src: 'icons/facebook-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                    <a class="mr-2" href="https://twitter.com">
-                                        <img src="${assetPath(src: 'icons/twitter-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                    <a href="https://google.com">
-                                        <img src="${assetPath(src: 'icons/google-logo.png')}" height="20px"
-                                             width="20px" alt="facebook">
-                                    </a>
-                                </div> <!-- facebook/Twitter icons -->
-                                <div class="col d-flex">
-                                    <g:if test="${readingItemObj.resource instanceof linksharing.LinkResource}">
-                                        <a class="ml-auto "
-                                           href="http://${readingItemObj.resource.url}">View full site</a>
-                                    </g:if>
-                                    <g:else>
-                                        <a class="ml-auto" href="">Download</a>
-                                    </g:else>
-                                    <button class="ml-4 btn btn-link p-0"
-                                            onclick="markRead(${readingItemObj.id})">Mark as read</button>
-                                    <a class="ml-4" href="">View post</a>
-                                </div>
-                            </div>
-                        </div>
-                    </g:each>
+                    <div class="userInbox">
+                        <g:render template="/_templates/inbox"
+                                  model="['paginatedReadingItemList': paginatedReadingItemList]"/>
+                    </div>
                 </div>
+                <% int pageCount = allReadingItemList.size() / 10
+                pageCount = Math.max(pageCount, 1)
+                if ((allReadingItemList.size() % 10 > 0) && allReadingItemList.size() > 10) {
+                    pageCount++
+                }
+                %>
+                <g:if test="${!allReadingItemList.isEmpty()}">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <g:each in="${1..pageCount}" var="num" status="i">
+                                <li class="page-item"><a class="page-link" href="#">${num}</a>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </nav>
+                </g:if>
             </div>
+
         </div>
     </div>
 </div>

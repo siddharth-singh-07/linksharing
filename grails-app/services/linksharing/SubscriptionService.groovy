@@ -1,6 +1,6 @@
 package linksharing
 
-import enums.SeriousnessEnum
+
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -18,7 +18,13 @@ class SubscriptionService {
 
         sub.validate()
         if (!sub.hasErrors()) {
-            sub.save(flush: true, failOnError: true)
+            try {
+                sub.save(flush: true, failOnError: true)
+            }
+            catch (e) {
+                println e
+                return sub
+            }
         }
         return sub
     }

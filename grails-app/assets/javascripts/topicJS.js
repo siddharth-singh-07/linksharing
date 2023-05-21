@@ -1,5 +1,5 @@
 let docModalSelect = document.getElementById('modalShareDocTopicSelect')
-let linkModalSelect= document.getElementById('modalShareLinkTopicSelect')
+let linkModalSelect = document.getElementById('modalShareLinkTopicSelect')
 docModalSelect.disabled = true
 linkModalSelect.disabled = true
 
@@ -35,7 +35,7 @@ function markRead(readingItemId) {
             readBtn.remove()
         },
         error: function (xhr, status, error) {
-            document.getElementById(`seriousnessError_${topicId}`).classList.remove('d-none');
+            console.log(error)
         }
     });
 }

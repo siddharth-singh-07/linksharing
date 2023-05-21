@@ -10,32 +10,36 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <div class="d-flex input-group w-auto">
-                <input type="search" class="form-control mr-3" placeholder="Search"/>
+                <g:form controller="search" action="index" method="GET">
+                    <g:field type="search" class="form-control mr-3" placeholder="Search" name="searchQuery"
+                             id="searchInput"></g:field>
+                    <input type="submit" hidden="hidden">
+                </g:form>
                 <g:if test="${session.user}">
                     <g:if test="${page != 'profile'}">
                         <g:if test="${page != 'topicShow'}">
                             <button type="button" class="btn btn-link" data-toggle="modal"
-                                    data-target="#modalCreateTopic">
+                                    data-target="#modalCreateTopic" title="Create Topic">
                                 <a href="#">
                                     <img src="${assetPath(src: 'icons/message.png')}" alt="Create Topic" height="25em">
                                 </a>
                             </button>
 
                             <button type="button" class="btn btn-link" data-toggle="modal"
-                                    data-target="#modalSendInvitation">
+                                    data-target="#modalSendInvitation" title="Send Invite">
                                 <a href="#">
                                     <img src="${assetPath(src: 'icons/mail.png')}" alt="Send Invitation" height="26em">
                                 </a>
                             </button>
                         </g:if>
 
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareLink">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareLink" title="Share Link">
                             <a href="#">
                                 <img src="${assetPath(src: 'icons/link.png')}" alt="Create Resource Link" height="20em">
                             </a>
                         </button>
 
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareDoc">
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#modalShareDoc" title="Share Document">
                             <a href="#">
                                 <img src="${assetPath(src: 'icons/file.png')}" alt="Create Resource File" height="24em">
                             </a>
@@ -53,8 +57,8 @@
                                 <a class="dropdown-item" href="/user/editProfile">Profile</a>
                                 <g:if test="${session.user?.isAdmin}">
                                     <a class="dropdown-item" href="/admin/users">Users</a>
-                                    <a class="dropdown-item" href="#">Topics</a>
-                                    <a class="dropdown-item" href="#">Posts</a>
+                                    <a class="dropdown-item" href="/admin/topics">Topics</a>
+                                    <a class="dropdown-item" href="/admin/posts">Posts</a>
                                 </g:if>
 
                                 <g:link controller="User" action="logoutUser" class="dropdown-item">Log out</g:link>
@@ -82,7 +86,7 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalCreateTopicNameInput">Name</label>
                             <g:field type="text" id="modalCreateTopicNameInput" name="modalCreateTopicNameInput"
-                                     class="form-control form-control-md"/>
+                                     class="form-control form-control-md" required="true"/>
                         </div>
 
                         <div class="form-outline mb-3">
@@ -90,7 +94,7 @@
                             </div>
                             <g:select id="modalCreateTopicVisibilitySelect" name="modalCreateTopicVisibilitySelect"
                                       from="${VisibilityEnum.values()}" optionKey="key"
-                                      class="form-select form-select-lg mb-3 form-control"/>
+                                      class="form-select form-select-lg mb-3 form-control" required="true"/>
                         </div>
                     </div>
 
@@ -113,25 +117,30 @@
                     </button>
                 </div>
 
-                <div class="modal-body">
+            <div class="modal-body">
+                <g:form controller="topic" action="sendInvite" method="POST">
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalSendInvitationEmailInput">Email</label>
-                        <input type="text" id="modalSendInvitationEmailInput"
-                               class="form-control form-control-md"/>
+                        <g:field type="text" id="modalSendInvitationEmailInput" name="invitationEmail"
+                                 class="form-control form-control-md" required="true" maxlength="254"/>
                     </div>
 
                     <div class="form-outline mb-3">
                         <div><label class="form-label" for="modalSendInvitationTopicSelect">Topic</label></div>
                         <g:select id="modalSendInvitationTopicSelect" name="invitationTopic"
                                   from="${userSubscriptionsList}" optionKey="${{ it?.id }}"
-                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"/>
+                                  optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"
+                                  required="true"/>
+                        <g:hiddenField name="invitationSender" value="${session.user?.username}"/>
+                        <g:hiddenField name="modal" value="navbar"/>
                     </div>
-                </div>
+                    </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Invite</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Invite</button>
+                    </div>
+                </g:form>
             </div>
         </div>
     </div>
@@ -150,14 +159,15 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalShareLinkLinkInput">Link</label>
                             <g:field type="text" id="modalShareLinkLinkInput" name="modalShareLinkLinkInput"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="254"/>
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalShareLinkDescriptionInput">Description</label>
                             <g:textArea type="" id="modalShareLinkDescriptionInput"
                                         name="modalShareLinkDescriptionInput"
-                                        class="form-control form-control-md" required="true"></g:textArea>
+                                        class="form-control form-control-md" required="true"
+                                        maxlength="3999"></g:textArea>
                         </div>
 
                         <div class="form-outline mb-3">
@@ -169,7 +179,7 @@
                                       class="form-select form-select-lg mb-3 form-control"/>
                             <g:if test="${page == 'topicShow'}">
                                 <g:hiddenField name="modalShareLinkTopicSelect"
-                                               value="${userSubscriptionsList.id}"/>
+                                               value="${userSubscriptionsList?.id}"/>
                             </g:if>
                         </div>
                     </div>
@@ -203,7 +213,7 @@
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalShareDocDescriptionInput">Description</label>
                         <textarea id="modalShareDocDescriptionInput" name="modalShareDocDescriptionInput"
-                                  class="form-control form-control-md" required="true"></textarea>
+                                  class="form-control form-control-md" required="true" maxlength="3999"></textarea>
                     </div>
 
                     <div class="form-outline mb-3">
@@ -213,13 +223,13 @@
                                   optionValue="${{ it?.name }}" class="form-select form-select-lg mb-3 form-control"/>
                         <g:if test="${page == 'topicShow'}">
                             <g:hiddenField name="modalShareDocTopicSelect"
-                                           value="${userSubscriptionsList.id}"/>
+                                           value="${userSubscriptionsList?.id}"/>
                         </g:if>
                     </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Share</button>
+                        <button type="submit" class="btn btn-primary" onclick="return validateFile();">Share</button>
                     </div>
                 </g:uploadForm>
             </div>
@@ -252,3 +262,35 @@
         </button>
     </div>
 </g:hasErrors>
+
+<div class="alert alert-danger alert-dismissible fade show pt-1 pb-1 d-none" id="error-nav">
+    <span id="errorMsg-nav"></span>
+    <button type="button" class="close pt-1 pb-1" data-dismiss="alert">
+        <span>&times;</span>
+    </button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                searchInput.form.submit();
+            }
+        });
+    });
+
+    function validateFile() {
+        var fileInput = document.getElementById("modalShareDocFileInput");
+        var maxSize = 10 * 1024 * 1024; // Maximum file size in bytes (e.g., 10MB)
+
+        var file = fileInput.files[0];
+        if (file && file.size > maxSize) {
+            document.getElementById("errorMsg-nav").textContent = "File size exceeds the limit.";
+            document.getElementById("error-nav").classList.remove('d-none');
+            return false;
+        }
+        return true;
+    }
+</script>

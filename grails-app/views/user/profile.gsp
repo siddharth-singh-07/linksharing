@@ -398,7 +398,7 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5 p-1" style="border-radius: 15px;">
+            <div class="card mt-5 p-1 mb-5" style="border-radius: 15px;">
                 <h5 class="card-title m-2">Posts</h5>
 
                 <div class="card-body p-0">
@@ -434,12 +434,13 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="http://${resourceObj?.url}">View full site</a>
+                                            <a class="ml-auto" href="${resourceObj?.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Download</a>
-                                        </g:else>
-                                        <a class="ml-4" href="">View post</a>
+                                            <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                    action="downloadResource"
+                                                    params='[resourceId: resourceObj.id]'>Download</g:link>                                        </g:else>
+                                        <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                     </div>
                                 </div>
                             </div>
@@ -478,12 +479,13 @@
                                     </div> <!-- facebook/Twitter icons -->
                                     <div class="col d-flex">
                                         <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                            <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
+                                            <a class="ml-auto" href="https://${resourceObj?.url}" target="_blank">View full site</a>
                                         </g:if>
                                         <g:else>
-                                            <a class="ml-auto" href="">Download</a>
-                                        </g:else>
-                                        <a class="ml-4" href="">View post</a>
+                                            <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                    action="downloadResource"
+                                                    params='[resourceId: resourceObj.id]'>Download</g:link>                                        </g:else>
+                                        <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                     </div>
                                 </div>
                             </div>
@@ -521,12 +523,13 @@
                                         </div> <!-- facebook/Twitter icons -->
                                         <div class="col d-flex">
                                             <g:if test="${resourceObj instanceof linksharing.LinkResource}">
-                                                <a class="ml-auto" href="https://${resourceObj?.url}">View full site</a>
+                                                <a class="ml-auto" href="https://${resourceObj?.url}" target="_blank">View full site</a>
                                             </g:if>
                                             <g:else>
-                                                <a class="ml-auto" href="">Download</a>
-                                            </g:else>
-                                            <a class="ml-4" href="">View post</a>
+                                                <g:link class="ml-auto mr-2 btn btn-link p-0" controller="resource"
+                                                        action="downloadResource"
+                                                        params='[resourceId: resourceObj?.id]'>Download</g:link>                                            </g:else>
+                                            <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
                                         </div>
                                     </div>
                                 </div>

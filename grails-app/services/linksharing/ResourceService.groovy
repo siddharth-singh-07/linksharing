@@ -3,20 +3,18 @@ package linksharing
 import enums.VisibilityEnum
 import grails.gorm.transactions.Transactional
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 @Transactional
 class ResourceService {
 
     def ReadingItemService
+    def AuditLogService
 
     List recentShares() {
         List recentSharesList = Resource.createCriteria().list {
             topic {
                 eq('VISIBILITY', VisibilityEnum.PUBLIC)
             }
-            order('dateCreated', 'asc')
+            order('dateCreated', 'desc')
             maxResults(5)
         }
         return recentSharesList
@@ -42,7 +40,13 @@ class ResourceService {
 
         linkResource.validate()
         if (!linkResource.hasErrors()) {
-            linkResource.save(flush: true, failOnError: true)
+            try {
+                linkResource.save(flush: true, failOnError: true)
+            }
+            catch (e) {
+                println e
+                return linkResource
+            }
             ReadingItemService.addResource(linkResource)
         }
         return linkResource
@@ -56,32 +60,68 @@ class ResourceService {
 
         def resourceDoc = params.file
         if (resourceDoc && !resourceDoc.isEmpty()) {
-            def currentDateTime = LocalDateTime.now()
-            def formatter = DateTimeFormatter.ofPattern('yyyyMMddHHmmss')
-            def formattedDateTime = currentDateTime.format(formatter)
-
-            String filePath = "${params.user.username + formattedDateTime}"
+            String filePath = resourceDoc.getOriginalFilename()
             new FileOutputStream("/home/lt-siddharths/LinkSharing/grails-app/assets/fileResources/" + filePath).leftShift(resourceDoc.getInputStream())
             documentResource.filePath = filePath
         }
 
         documentResource.validate()
         if (!documentResource.hasErrors()) {
-            documentResource.save(flush: true, failOnError: true)
+            try {
+                documentResource.save(flush: true, failOnError: true)
+            }
+            catch (e) {
+                println e
+                return documentResource
+            }
             ReadingItemService.addResource(documentResource)
         }
         return documentResource
     }
 
-    def fetchUserPublicPosts(username){
-        def userPublicPostsList= Resource.createCriteria().list {
-            createdBy{
+    def fetchUserPublicPosts(username) {
+        def userPublicPostsList = Resource.createCriteria().list {
+            createdBy {
                 eq('username', username)
             }
-            topic{
+            topic {
                 eq('VISIBILITY', VisibilityEnum.PUBLIC)
             }
         }
         return userPublicPostsList
+    }
+
+    def deleteResource(username, resourceId) {
+        Resource resource = Resource.findById(resourceId)
+        User user = User.findByUsername(username)
+
+        if (!user.isAdmin && (resource.createdBy.username != user.username)) {
+            return false
+        } else if (!resource) {
+            return false
+        }
+
+        def readingItems = resource.readingItem
+        def resourceRatings = resource.resourceRating
+
+        readingItems.each { readingItem ->
+            if (!AuditLogService.createLog(readingItem, user))
+                return false
+        }
+        resourceRatings.each { resourceRating ->
+            if (!AuditLogService.createLog(resourceRating, user))
+                return false
+        }
+        if (!AuditLogService.createLog(resource, user))
+            return false
+
+        try {
+            resource.delete(flush: true)
+        }
+        catch (e) {
+            println e
+            return false
+        }
+        return true
     }
 }
