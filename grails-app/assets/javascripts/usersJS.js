@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $.fn.dataTable.ext.errMode = 'none';
     $('#allUsersTable').DataTable();
     var myTable = $("#allUsersTable").DataTable({
     });

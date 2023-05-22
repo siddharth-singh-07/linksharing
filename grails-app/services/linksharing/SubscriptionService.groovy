@@ -36,9 +36,12 @@ class SubscriptionService {
         return sub
     }
 
-    void deleteSubscription(topicId, user) {
+    void deleteSubscription(topicId, username) {
         Topic topic = Topic.findById(topicId)
+        User user = User.findByUsername(username)
         Subscription sub = Subscription.findByTopicAndUser(topic, user)
-        sub.delete()
+        if (sub) {
+            sub.delete()
+        }
     }
 }

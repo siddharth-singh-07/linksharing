@@ -29,13 +29,13 @@
         <div class="row d-flex justify-content-center h-100"><!-- align-items-center -->
 
             <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-                <div class="card mt-5 mb-5" style="border-radius: 15px;">
+                <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                     <div class="card-body p-2 m-2">
                         <div class="row">
                             <div class="col col-auto">
                                 <a href="/user/profile?user=${resourceObj?.createdBy?.username}"><img
                                         src="${assetPath(src: "${resourceObj?.createdBy?.photo}")}" width="70px"
-                                        height="70px"/></a>
+                                        height="70px" style="border-radius: 15px;"/></a>
                             </div>
 
                             <div class="col">
@@ -118,7 +118,7 @@
             </div>
 
             <div class="col-md-4 col-lg-4 col-xl-4">
-                <div class="card mt-5 mb-5" style="border-radius: 15px;">
+                <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                     <div class="card-body p-2">
                         <h5 class="card-title m-2 mb-4">Trending Topics</h5>
                         <% def trendingCount = 0 %>
@@ -132,8 +132,7 @@
                                             <div class="col col-auto">
                                                 <a href="/user/profile?user=${obj[1].createdBy.username}"><img
                                                         src="${assetPath(src: "${obj[1].createdBy.photo}")}"
-                                                        width="70px"
-                                                        height="70px"/></a>
+                                                        width="70px" height="70px" style="border-radius: 15px;"/></a>
                                             </div>
 
                                             <div class="col">

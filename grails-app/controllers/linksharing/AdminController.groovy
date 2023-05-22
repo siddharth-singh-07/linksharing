@@ -16,7 +16,7 @@ class AdminController {
         }
         List userSubscriptionsList = UserService.getUserSubscriptions(session.user.username)
         List allUsersList = AdminService.fetchUsers()
-        render(view: 'users.gsp', model: ['allUsersList': allUsersList, 'userSubscriptionsList': userSubscriptionsList])
+        render(view: 'users', model: ['allUsersList': allUsersList, 'userSubscriptionsList': userSubscriptionsList])
     }
 
     def changeUserStatus() {

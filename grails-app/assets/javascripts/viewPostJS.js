@@ -119,7 +119,33 @@ function subscribe(topicId, username) {
     });
 }
 
+function unsubscribe(topicId, username) {
+    $.ajax({
+        url: '/subscription/deleteSubscription',
+        type: 'POST',
+        data: {
+            topicId: topicId,
+            username: username
+        },
+        success: function (response) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        },
+        error: function (xhr, status, error) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        }
+    });
+}
+
 var rating = 5;
+var count = 0;
 
 function fetchRating() {
     $.ajax({
@@ -130,6 +156,7 @@ function fetchRating() {
         type: 'GET',
         success: function (response) {
             rating = response.rating;
+            count = response.countRatings;
             showFilled(rating);
         }
     });
@@ -151,6 +178,11 @@ function showFilled(num) {
         stars[i].classList.add('checked')
     }
     document.getElementById('ratingDisplay').innerText = `${rating} of 5`
+    if (count == 0) {
+        document.getElementById('ratingCount').innerText = `No ratings so far!`
+    } else {
+        document.getElementById('ratingCount').innerText = `${count} rating(s)`
+    }
 }
 
 function mouseOut() {

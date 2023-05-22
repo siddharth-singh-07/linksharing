@@ -223,6 +223,31 @@ function subscribe(topicId, username) {
     });
 }
 
+function unsubscribe(topicId, username) {
+    $.ajax({
+        url: '/subscription/deleteSubscription',
+        type: 'POST',
+        data: {
+            topicId: topicId,
+            username: username
+        },
+        success: function (response) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        },
+        error: function (xhr, status, error) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        }
+    });
+}
+
 $(document).ready(function () {
     $('.page-link').click(function () {
         // $('.page-link').removeClass('active');
@@ -258,6 +283,7 @@ function deleteTopic(topicId) {
         }
     });
 }
+
 function searchInbox() {
     console.log("inside search method")
     var searchInput = document.getElementById('inboxSearchInput').value;
@@ -274,6 +300,7 @@ function searchInbox() {
         }
     });
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     var searchInput = document.getElementById('inboxSearchInput');
     searchInput.addEventListener('keyup', function (event) {

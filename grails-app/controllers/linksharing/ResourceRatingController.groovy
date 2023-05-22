@@ -10,7 +10,8 @@ class ResourceRatingController {
     def fetchCurrentRating(){
         Long resourceId= params.id as Long
         def avgRating= ResourceRatingService.fetchRating(resourceId)
-        def ratingResponse = [rating: Math.round(avgRating ?: 0)]
+        def count= ResourceRatingService.fetchRatingCount(resourceId)
+        def ratingResponse = [rating: Math.round(avgRating ?: 0), countRatings: count]
         render ratingResponse as JSON
     }
 

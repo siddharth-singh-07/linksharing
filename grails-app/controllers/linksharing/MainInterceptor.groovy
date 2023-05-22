@@ -7,6 +7,7 @@ class MainInterceptor {
                 .excludes(controller: "user", action: "registerUser")
                 .excludes(controller: 'user', action: 'forgotPasswordTrigger')
                 .excludes(controller: 'user', action: 'resetPassword')
+                .excludes(controller: 'user', action: 'profile')
                 .excludes(controller: 'search', index: "index")
                 .excludes(controller: 'resource', index: 'viewPost')
                 .excludes(controller: 'resourceRating', index: 'fetchCurrentRating')

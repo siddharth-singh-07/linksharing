@@ -17,10 +17,10 @@
             <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2">
                     <div class="row align-items-center">
-                        <div class="col-sm-4 col-xl-3 col-lg-4 mr-2 mt-1">
+                        <div class="col-sm-4 col-xl-3 col-lg-4 m-2 ">
                             <a href="/user/profile?user=${session.user.username}"><img
-                                    src="${assetPath(src: "${session.user?.photo}")}" alt="User" width="95px"
-                                    height="95px"/></a>
+                                    src="${assetPath(src: "${session.user?.photo}")}" alt="User" width="90px"
+                                    height="95px" style="border-radius: 15px;"/></a>
                         </div>
 
                         <div class="col-sm-8 col-xl-8 col-lg-8">
@@ -82,13 +82,13 @@
                                         <strong>Topic</strong>
                                         <strong>Posts</strong>
                                     </li>
-                                <g:each in="${userSubscriptionsList}" var="topicObj">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a class="text-dark"
-                                           href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
-                                        <span class="badge badge-primary badge-pill">${topicObj.resource.size()}</span>
-                                    </li>
-                                </g:each>
+                                    <g:each in="${userSubscriptionsList}" var="topicObj">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a class="text-dark"
+                                               href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
+                                            <span class="badge badge-primary badge-pill">${topicObj.resource.size()}</span>
+                                        </li>
+                                    </g:each>
                                 </g:else>
                             </ul>
                         </div>
@@ -112,7 +112,7 @@
                                     <div class="col col-auto">
                                         <a href="/user/profile?user=${topicObj.createdBy.username}"><img
                                                 src="${assetPath(src: "${topicObj.createdBy.photo}")}" width="70px"
-                                                height="70px"/></a>
+                                                height="70px" style="border-radius: 15px;"/></a>
                                     </div>
 
                                     <div class="col">
@@ -157,11 +157,8 @@
 
                                         <div class="row ">
                                             <div class="col pl-0">
-                                                <g:form controller="subscription" action="deleteSubscription">
-                                                    <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                                    <button type="submit" class="d-inline-block btn btn-link p-0"
-                                                            href="">Unsubscribe</button>
-                                                </g:form>
+                                                <button type="submit" class="d-inline-block btn btn-link p-0"
+                                                        onclick="unsubscribe('${topicObj.id}', '${session.user?.username}')">Unsubscribe</button>
                                             </div>
 
                                             <div class="col pl-0">
@@ -240,7 +237,7 @@
                                     <div class="col col-auto">
                                         <a href="/user/profile?user=${topicObj.createdBy.username}"><img
                                                 src="${assetPath(src: "${topicObj.createdBy.photo}")}" width="70px"
-                                                height="70px"/></a>
+                                                height="70px" style="border-radius: 15px;"/></a>
                                     </div>
 
                                     <div class="col">
@@ -285,11 +282,8 @@
 
                                         <div class="row ">
                                             <div class="col pl-0">
-                                                <g:form controller="subscription" action="deleteSubscription">
-                                                    <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                                    <button type="submit" class="d-inline-block btn btn-link p-0"
-                                                            href="">Unsubscribe</button>
-                                                </g:form>
+                                                <button type="submit" class="d-inline-block btn btn-link p-0"
+                                                        onclick="unsubscribe('${topicObj.id}', '${session.user?.username}')">Unsubscribe</button>
                                             </div>
 
                                             <div class="col pl-0">
@@ -372,7 +366,7 @@
                                         <div class="col col-auto">
                                             <a href="/user/profile?user=${obj[1].createdBy.username}"><img
                                                     src="${assetPath(src: "${obj[1].createdBy.photo}")}" width="70px"
-                                                    height="70px"/></a>
+                                                    height="70px" style="border-radius: 15px;"/></a>
                                         </div>
 
                                         <div class="col">
@@ -418,11 +412,11 @@
                                             <div class="row ">
                                                 <div class="col pl-0 mr-4">
                                                     <g:if test="${obj[1].subscription.find { it.user.username == session.user.username }}">
-                                                        <g:form controller="subscription" action="deleteSubscription">
-                                                            <g:hiddenField name="topic" value="${obj[1].id}"/>
-                                                            <button type="submit"
-                                                                    class="d-inline-block btn btn-link p-0">Unsubscribe</button>
-                                                        </g:form>
+                                                    %{--                                                        <g:form controller="subscription" action="deleteSubscription">--}%
+                                                    %{--                                                            <g:hiddenField name="topic" value="${obj[1].id}"/>--}%
+                                                        <button class="d-inline-block btn btn-link p-0"
+                                                                onclick="unsubscribe('${obj[1].id}', '${session.user?.username}')">Unsubscribe</button>
+                                                    %{--                                                        </g:form>--}%
                                                     </g:if>
                                                     <g:else>
                                                         <span class="d-none" id="message_${obj[1].id}"></span>
@@ -518,8 +512,9 @@
                                  name="inboxSearchQuery"
                                  id="inboxSearchInput"></g:field>
                     </div>
+                    <hr>
 
-                    <div class="userInbox">
+                    <div class="userInbox pt-1">
                         <g:render template="/_templates/inbox"
                                   model="['paginatedReadingItemList': paginatedReadingItemList]"/>
                     </div>

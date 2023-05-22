@@ -17,9 +17,12 @@ class SubscriptionController {
     }
 
     def deleteSubscription() {
-        SubscriptionService.deleteSubscription(params.topic, session.user)
+        def topicId = params.topicId
+        def username = params.username
+        SubscriptionService.deleteSubscription(topicId, username)
         flash.message = "Unsubscribed successfully"
-        redirect(controller: 'User', action: 'dashboard')
+//        redirect(controller: 'User', action: 'dashboard')
+        render status: 200, text: "Success"
     }
 
     def createSubscription() {

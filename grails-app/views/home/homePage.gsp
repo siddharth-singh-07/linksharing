@@ -23,12 +23,12 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Recent shares</h4>
                     <g:each in="${recentSharesList}">
-                        <div class="card mb-3" style="border-radius: 15px;">
+                        <div class="card mb-3 " style="border-radius: 15px;">
                             <div class="card-body p-2 row align-items-center">
                                 <div class="col-auto">
                                     <a href="/user/profile?user=${it?.createdBy?.username}"><img
                                             src="${assetPath(src: "${it?.createdBy?.photo}")}" width="95px"
-                                            height="95px"/></a>
+                                            height="95px" style="border-radius: 15px;"/></a>
                                 </div>
 
                                 <div class="col">
@@ -96,7 +96,7 @@
                                 <div class="col-auto">
                                     <a href="/user/profile?user=${obj[1]?.createdBy?.username}"><img
                                             src="${assetPath(src: "${obj[1]?.createdBy?.photo}")}" width="95px"
-                                            height="95px"/></a>
+                                            height="95px" style="border-radius: 15px;"/></a>
                                 </div>
 
                                 <div class="col">
@@ -164,7 +164,7 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="signInUsername">Email or Username</label>
                             <g:field type="text" id="signInUsername" value="${user?.username}" name="signInUsername"
-                                     class="form-control form-control-md" required="true" maxlength="254"/>
+                                     class="form-control form-control-md" required="true" maxlength="254" autofocus="true"/>
                         </div>
 
                         <div class="form-outline mb-2">
@@ -222,13 +222,13 @@
                         <div class="form-outline mb-3 ">
                             <label class="form-label" for="password">Password</label>
                             <g:field type="password" name="password" id="password"
-                                     class="form-control form-control-md" required="true" maxlength="254"/>
+                                     class="form-control form-control-md" required="true" maxlength="254" minlength="8"/>
                         </div>
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="cnfPassword">Confirm Password</label>
                             <span id="pswdText" class="text-danger d-none">Password does not match</span>
-                            <g:field type="password" onkeyup="checkPass()" class="form-control" id="cnfPassword"
+                            <g:field type="password" onkeyup="checkPass(); addListener();" class="form-control" id="cnfPassword"
                                      name="cnfPassword" required="true" maxlength="254"></g:field>
                         </div>
 
