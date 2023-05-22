@@ -228,7 +228,8 @@
                             </div>
 
                             <div class="col">
-                                <g:field type="file" id="photo" class="form-control" name="photo"></g:field>
+                                <g:field type="file" id="photo" class="form-control" name="photo"
+                                         accept=".jpg, .jpeg, .png"></g:field>
                             </div>
                         </div>
 
@@ -237,7 +238,7 @@
                             </div>
 
                             <div class="col">
-                                <button type="submit" class="btn btn-outline-primary">Update</button>
+                                <button type="submit" class="btn btn-outline-primary" onclick="return validateFile();">Update</button>
                             </div>
                         </div>
                     </g:uploadForm>

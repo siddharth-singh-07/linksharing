@@ -116,3 +116,15 @@ function deleteTopic(topicId) {
         }
     });
 }
+function validateFile() {
+    var fileInput = document.getElementById("photo");
+    var maxSize = 10 * 1024 * 1024; // Maximum file size in bytes (e.g., 10MB)
+
+    var file = fileInput.files[0];
+    if (file && file.size > maxSize) {
+        document.getElementById("errorMsg-nav").textContent = "File size exceeds the limit.";
+        document.getElementById("error-nav").classList.remove('d-none');
+        return false;
+    }
+    return true;
+}

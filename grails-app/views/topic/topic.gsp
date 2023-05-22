@@ -217,7 +217,12 @@
                                                     onclick="markRead(${currReadingItem.id})">Mark as read</button>
                                         </g:if>
                                     </g:if>
+                                <g:if test="${session.user}">
                                     <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
+                                </g:if>
+                                <g:elseif test="${!session.user && resourceObj.topic.VISIBILITY==enums.VisibilityEnum.PUBLIC}">
+                                    <a class="ml-4" href="/resource/viewPublicPost?id=${resourceObj.id}">View post</a>
+                                </g:elseif>
                                 </div>
                             </div>
                         </div>

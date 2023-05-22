@@ -26,7 +26,7 @@
                         <div class="card mb-3" style="border-radius: 15px;">
                             <div class="card-body p-2 row align-items-center">
                                 <div class="col-auto">
-                                    <a href="/user/profile?user=${it.createdBy.username}"><img
+                                    <a href="/user/profile?user=${it?.createdBy?.username}"><img
                                             src="${assetPath(src: "${it?.createdBy?.photo}")}" width="95px"
                                             height="95px"/></a>
                                 </div>
@@ -42,7 +42,7 @@
                                         </div>
 
                                         <div class="col d-flex">
-                                            <div class="ml-auto mr-5"><a class="justify-content-end"
+                                            <div class="ml-auto mr-3"><a class="justify-content-end"
                                                                          href="/topic/showTopic?id=${it?.topic?.id}">${it?.topic?.name}</a>
                                             </div>
                                         </div>
@@ -94,7 +94,7 @@
                         <div class="card mb-3" style="border-radius: 15px;">
                             <div class="card-body p-2 row align-items-center">
                                 <div class="col-auto">
-                                    <a href="/user/profile?user=${obj[1].createdBy.username}"><img
+                                    <a href="/user/profile?user=${obj[1]?.createdBy?.username}"><img
                                             src="${assetPath(src: "${obj[1]?.createdBy?.photo}")}" width="95px"
                                             height="95px"/></a>
                                 </div>
@@ -110,8 +110,8 @@
                                         </div>
 
                                         <div class="col d-flex">
-                                            <div class="ml-auto mr-5"><a class="justify-content-end"
-                                                                         href="/topic/showTopic?id=${obj[1].topic.id}">${obj[1].topic.name}</a>
+                                            <div class="ml-auto mr-3"><a class="justify-content-end"
+                                                                         href="/topic/showTopic?id=${obj[1]?.topic?.id}">${obj[1]?.topic?.name}</a>
                                             </div>
                                         </div>
                                     </div>

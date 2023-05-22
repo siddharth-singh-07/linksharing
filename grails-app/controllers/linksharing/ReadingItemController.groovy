@@ -14,6 +14,12 @@ class ReadingItemController {
         int pageNum = params.page as Integer
         int offset = (pageNum - 1) * 10
         List paginatedReadingItemList = ReadingItemService.getPaginatedReadingItems(session.user, offset)
-        render(template: '/_templates/inbox' , model: ['paginatedReadingItemList': paginatedReadingItemList])
+        render(template: '/_templates/inbox', model: ['paginatedReadingItemList': paginatedReadingItemList])
+    }
+
+    def searchReadingItem() {
+        def query = params.inboxSearchQuery
+        List paginatedReadingItemList = ReadingItemService.searchInbox(query, session.user.username)
+        render(template: '/_templates/inbox', model: ['paginatedReadingItemList': paginatedReadingItemList])
     }
 }

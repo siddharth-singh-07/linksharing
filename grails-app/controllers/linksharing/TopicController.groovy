@@ -1,5 +1,6 @@
 package linksharing
 
+import enums.VisibilityEnum
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 
@@ -52,13 +53,22 @@ class TopicController {
     def showTopic() {   /*to display the topic show page*/
         def topicId = params.id as Integer
         Topic reqTopic = Topic.findById(topicId)
-        if(!reqTopic){
-            flash.warn= "Topic not found"
+        if (!reqTopic) {
+            flash.warn = "Topic not found"
             redirect(controller: 'user', action: 'dashboard')
             return
         }
-        List readingItemList = ReadingItemService.getAllReadingItems(session.user)
-        render(view: 'topic', model: ['topicObj': reqTopic, 'readingItemList': readingItemList, 'userSubscriptionsList': reqTopic])
+        if (session.user && (reqTopic.subscription.find { it.user.username == session.user.username } || reqTopic.VISIBILITY == VisibilityEnum.PUBLIC)) {
+            List readingItemList = ReadingItemService.getAllReadingItems(session.user)
+            render(view: 'topic', model: ['topicObj': reqTopic, 'readingItemList': readingItemList, 'userSubscriptionsList': reqTopic])
+        } else if (!session.user && reqTopic.VISIBILITY == VisibilityEnum.PUBLIC) {
+            List readingItemList
+            render(view: 'topic', model: ['topicObj': reqTopic, 'readingItemList': readingItemList, 'userSubscriptionsList': reqTopic])
+        } else {
+            flash.warn = "You dont have access to this topic"
+            redirect(controller: 'user', action: 'dashboard')
+        }
+
     }
 
     def sendInvite() {
@@ -99,12 +109,12 @@ class TopicController {
     }
 
     def deleteTopic() {
-        Long topicId= params.topicId as Long
+        Long topicId = params.topicId as Long
         if (TopicService.deleteTopic(session.user?.username, topicId)) {
-            flash.message= "Topic deleted successfully"
+            flash.message = "Topic deleted successfully"
             render status: 200, text: 'Success'
         } else {
-            flash.warn= "Topic deletion failed"
+            flash.warn = "Topic deletion failed"
             render status: 400, text: 'Failed'
         }
     }

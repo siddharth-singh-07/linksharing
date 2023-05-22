@@ -11,7 +11,7 @@ class UserService {
     }
 
     List getUserSubscriptions(String username) {
-        User user= User.findByUsername(username)
+        User user = User.findByUsername(username)
         List userSubscriptionsList = Topic.createCriteria().listDistinct {
             subscription {
                 eq('user', user)
@@ -34,7 +34,13 @@ class UserService {
         currUser.firstName = params.firstName
         currUser.lastName = params.lastName
         def photo = params.photo
+        String fileExtension = params.originalFilename.substring(params.originalFilename.lastIndexOf('.') + 1).toLowerCase()
+
         if (photo && !photo.isEmpty()) {
+            if (!(fileExtension in ['jpg', 'jpeg', 'png'])) {
+                return "Uploaded file must be an image"
+            }
+
             String filePath = "userUploads/pfp${currUsername}"
             File file = new File("/home/lt-siddharths/LinkSharing/grails-app/assets/images/" + filePath)
             if (file.exists()) {

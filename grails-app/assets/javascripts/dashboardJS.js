@@ -258,12 +258,26 @@ function deleteTopic(topicId) {
         }
     });
 }
+function searchInbox() {
+    console.log("inside search method")
+    var searchInput = document.getElementById('inboxSearchInput').value;
+    $.ajax({
+        url: '/readingItem/searchReadingItem',
+        type: 'GET',
+        data: {'inboxSearchQuery': searchInput},
+        success: function (response) {
+            $('.userInbox').html(response);
+        },
+        error: function (xhr, status, error) {
+            console.log("so sad")
+            console.log(error)
+        }
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
     var searchInput = document.getElementById('inboxSearchInput');
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            searchInput.form.submit();
-        }
+    searchInput.addEventListener('keyup', function (event) {
+        event.preventDefault();
+        searchInbox();
     });
 });

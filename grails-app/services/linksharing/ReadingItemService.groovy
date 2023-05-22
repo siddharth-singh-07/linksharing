@@ -49,4 +49,21 @@ class ReadingItemService {
         return readingItemList
     }
 
+    def searchInbox(searchQuery, username) {
+        def searchResultsList = ReadingItem.createCriteria().list {
+            resource {
+                or {
+                    topic {
+                        ilike("name", "%${searchQuery}%") // Match topic's name containing the search query
+                    }
+                    ilike("description", "%${searchQuery}%") // Match resource's description containing the search query
+                }
+            }
+            user {
+                eq('username', username)
+            }
+            eq('isRead', false)
+        }
+        return searchResultsList
+    }
 }
