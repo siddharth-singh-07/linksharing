@@ -185,6 +185,7 @@ class UserController {
             }
             flash.message = "Password changed successfully, please login with new password"
             render status: 200, text: 'Success'
+            return
         }
         flash.warn = "Verification failed"
         render status: 400, text: 'Failed'

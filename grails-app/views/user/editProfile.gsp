@@ -256,7 +256,7 @@
 
                             <div class="col">
                                 <g:field type="password" id="password"
-                                         class="form-control" name="password" maxlength="254"></g:field>
+                                         class="form-control" name="password" maxlength="254" minlength="8"></g:field>
                             </div>
                         </div>
 
@@ -268,7 +268,7 @@
                             <div class="col">
                                 <span id="pswdText" class="text-danger d-none">Password does not match</span>
                                 <g:field type="password" onkeyup="checkPass()" class="form-control" id="cnfPassword"
-                                         name="cnfPassword"></g:field>
+                                         name="cnfPassword" maxlength="254" minlength="8"></g:field>
                             </div>
                         </div>
 

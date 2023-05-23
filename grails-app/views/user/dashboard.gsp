@@ -82,7 +82,7 @@
                                         <strong>Topic</strong>
                                         <strong>Posts</strong>
                                     </li>
-                                    <g:each in="${userSubscriptionsList}" var="topicObj">
+                                    <g:each in="${userSubscriptionsList.sort{it.name}}" var="topicObj">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <a class="text-dark"
                                                href="/topic/showTopic?id=${topicObj.id}">${topicObj.name}</a>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> <!--View all subscriptions modal-->
 
             <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2 ">
@@ -510,7 +510,7 @@
                         <h5 class="card-title m-2 pb-2 d-inline">Inbox</h5>
                         <g:field type="search" class="form-control ml-auto w-25" placeholder="Search"
                                  name="inboxSearchQuery"
-                                 id="inboxSearchInput"></g:field>
+                                 id="inboxSearchInput" maxlength="255" ></g:field>
                     </div>
                     <hr>
 
@@ -535,7 +535,7 @@
                         </ul>
                     </nav>
                 </g:if>
-            </div>
+            </div> <!--Inbox-->
 
         </div>
     </div>

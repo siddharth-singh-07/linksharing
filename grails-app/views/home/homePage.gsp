@@ -266,7 +266,7 @@
             <div class="modal-body" id="forgotPasswordModalBody">
                 <div class="form-outline mb-3" id="oneEmail">
                     <label class="form-label" for="forgotPasswordEmail">Email/Username</label>
-                    <g:field type="text" id="forgotPasswordEmail" name="forgotPasswordEmail"
+                    <g:field type="email" id="forgotPasswordEmail" name="forgotPasswordEmail"
                              class="form-control form-control-md" maxlength="254"/>
                 </div>
 

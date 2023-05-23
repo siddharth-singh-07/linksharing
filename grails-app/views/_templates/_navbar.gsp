@@ -12,7 +12,7 @@
             <div class="d-flex input-group w-auto">
                 <g:form controller="search" action="index" method="GET">
                     <g:field type="search" class="form-control mr-3" placeholder="Search" name="searchQuery"
-                             id="searchInput"></g:field>
+                             id="searchInput" maxlength="255"></g:field>
                     <input type="submit" hidden="hidden">
                 </g:form>
                 <g:if test="${session.user}">
@@ -86,7 +86,7 @@
                         <div class="form-outline mb-3">
                             <label class="form-label" for="modalCreateTopicNameInput">Name</label>
                             <g:field type="text" id="modalCreateTopicNameInput" name="modalCreateTopicNameInput"
-                                     class="form-control form-control-md" required="true"/>
+                                     class="form-control form-control-md" required="true" maxlength="255"/>
                         </div>
 
                         <div class="form-outline mb-3">
@@ -121,7 +121,7 @@
                 <g:form controller="topic" action="sendInvite" method="POST">
                     <div class="form-outline mb-3">
                         <label class="form-label" for="modalSendInvitationEmailInput">Email</label>
-                        <g:field type="text" id="modalSendInvitationEmailInput" name="invitationEmail"
+                        <g:field type="email" id="modalSendInvitationEmailInput" name="invitationEmail"
                                  class="form-control form-control-md" required="true" maxlength="254"/>
                     </div>
 

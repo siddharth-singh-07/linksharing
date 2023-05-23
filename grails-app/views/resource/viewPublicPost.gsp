@@ -202,7 +202,7 @@
                                 <label class="form-label" for="modalShareLinkLinkInput">Link</label>
                                 <g:field type="text" id="modalShareLinkLinkInput" name="modalShareLinkLinkInput"
                                          value="${resourceObj.url}"
-                                         class="form-control form-control-md" maxlength="3999"/>
+                                         class="form-control form-control-md" maxlength="255"/>
                             </div>
 
                             <div class="form-outline mb-3">
