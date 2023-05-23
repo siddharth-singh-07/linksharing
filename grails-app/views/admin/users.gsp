@@ -37,7 +37,7 @@
         <g:each in="${allUsersList}" var="userObj">
             <tr>
                 <td>${userObj.id}</td>
-                <td>${userObj.username}</td>
+                <td><a href="/user/profile?user=${userObj.username}">${userObj.username}</a></td>
                 <td>${userObj.email}</td>
                 <td>${userObj.firstName}</td>
                 <td>${userObj.lastName}</td>

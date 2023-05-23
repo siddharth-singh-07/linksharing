@@ -101,6 +101,7 @@ function saveEditTopic(topicId) {
         }
     });
 }
+
 function deleteTopic(topicId) {
     $.ajax({
         url: '/topic/deleteTopic',
@@ -115,4 +116,33 @@ function deleteTopic(topicId) {
             window.location.reload()
         }
     });
+}
+
+function validateFile() {
+    var fileInput = document.getElementById("photo");
+    var maxSize = 10 * 1024 * 1024; // Maximum file size in bytes (e.g., 10MB)
+
+    var file = fileInput.files[0];
+    if (file && file.size > maxSize) {
+        document.getElementById("errorMsg-nav").textContent = "File size exceeds the limit.";
+        document.getElementById("error-nav").classList.remove('d-none');
+        return false;
+    }
+    return true;
+}
+
+function ValidateForm() {
+    if (!validateFile()) {
+        return false
+    }
+
+    let fName = document.getElementById("firstName").value;
+    let lName = document.getElementById("lastName").value;
+
+    if (fName.trim() == "" || lName.trim() == "") {
+        document.getElementById("errorMsg-nav").textContent = "Input fields can not be null.";
+        document.getElementById("error-nav").classList.remove('d-none');
+        return false
+    }
+    return true
 }

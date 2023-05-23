@@ -1,5 +1,7 @@
 package linksharing
 
+import enums.VisibilityEnum
+
 class ResourceController {
     def ResourceService
     def ReadingItemService
@@ -40,19 +42,33 @@ class ResourceController {
     }
 
     def viewPost() {
-        List trendingTopicsList = TopicService.trendingTopics()
+        if (!session.user) {
+            redirect(action: 'viewPublicPost', params: ['id': params.id])
+            return
+        }
         Resource resource = Resource.findById(params.id as Long)
         if (!resource) {
+            flash.warn = "Post does not exist"
+            redirect(controller: 'user', action: 'dashboard')
+        } else if (resource.topic.VISIBILITY == VisibilityEnum.PRIVATE && !resource.topic.subscription.find { it.user.username == session.user.username }) {
+            flash.warn = "You don't have access to this post"
             redirect(controller: 'user', action: 'dashboard')
         } else {
+            List trendingTopicsList = TopicService.trendingTopics()
             render(view: 'viewPost', model: ['trendingTopicsList': trendingTopicsList, 'resourceObj': resource, 'userSubscriptionsList': resource.topic])
         }
     }
+
     def viewPublicPost() {
+        if (session.user) {
+            redirect(action: 'viewPost', params: ['id': params.id])
+            return
+        }
         List trendingTopicsList = TopicService.trendingTopics()
         Resource resource = Resource.findById(params.id as Long)
-        if (!resource) {
-            redirect(controller: 'user', action: 'dashboard')
+        if (!resource || resource.topic.VISIBILITY == VisibilityEnum.PRIVATE) {
+            redirect(controller: 'home', action: 'index')
+            return
         } else {
             render(view: 'viewPublicPost', model: ['trendingTopicsList': trendingTopicsList, 'resourceObj': resource])
         }
@@ -88,7 +104,7 @@ class ResourceController {
 
     def updateDocumentResource() {
         Resource resource = DocumentResource.findById(params.resourceId)
-        def resourceDoc= request.getFile('modalShareDocFileInput')
+        def resourceDoc = request.getFile('modalShareDocFileInput')
 
         if (!resource) {
             flash.warn = "Resource not found"
@@ -101,7 +117,7 @@ class ResourceController {
             flag = true
         }
         if (resourceDoc && !resourceDoc.isEmpty()) {
-            File oldFile= new File("/home/lt-siddharths/LinkSharing/grails-app/assets/fileResources/${resource.filePath}")
+            File oldFile = new File("/home/lt-siddharths/LinkSharing/grails-app/assets/fileResources/${resource.filePath}")
             oldFile.delete()
 
             String filePath = resourceDoc.getOriginalFilename()
@@ -139,12 +155,10 @@ class ResourceController {
         String path = res.filePath
         println "/home/lt-siddharths/LinkSharing/grails-app/assets/fileResources/${path}"
         def file = new File("/home/lt-siddharths/LinkSharing/grails-app/assets/fileResources/${path}")
-            if (file.exists())
-            {
-                response.setContentType("application/octet-stream")
-                response.setHeader("Content-disposition", "attachment;filename=\"${file.name}\"")
-                response.outputStream << file.bytes
-            }
-            else println("Error!")
-        }
+        if (file.exists()) {
+            response.setContentType("application/octet-stream")
+            response.setHeader("Content-disposition", "attachment;filename=\"${file.name}\"")
+            response.outputStream << file.bytes
+        } else println("Error!")
+    }
 }

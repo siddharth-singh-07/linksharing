@@ -1,8 +1,8 @@
-<g:if test="${allReadingItemList.isEmpty()}">
+<g:if test="${paginatedReadingItemList.isEmpty()}">
     <span class="text-muted">Nothing to show</span>
 </g:if>
 <g:each in="${paginatedReadingItemList}" var="readingItemObj">
-    <div class="p-1 pb-3" id="div_${readingItemObj.id}">
+    <div class="p-1 pb-4 myContent" id="div_${readingItemObj.id}">
         <div class="row">
             <div class="col pb-2 d-flex justify-content-between">
                 <div>

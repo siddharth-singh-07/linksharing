@@ -12,7 +12,7 @@
 <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center h-100"><!-- align-items-center -->
         <div class="col-md-4 col-lg-4 col-xl-4">
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2 ">
                     <h6 class="card-title m-2">Topic: ${topicObj.name}</h6>
 
@@ -50,11 +50,8 @@
                                         <g:if test="${session.user}">
                                             <g:if test="${topicObj.subscription.find { it.user.username == session.user.username }}">
                                                 <g:if test="${topicObj.createdBy.username != session.user.username}">
-                                                    <g:form controller="subscription" action="deleteSubscription">
-                                                        <g:hiddenField name="topic" value="${topicObj.id}"/>
-                                                        <button type="submit"
-                                                                class="d-inline-block btn btn-link p-0">Unsubscribe</button>
-                                                    </g:form>
+                                                    <button onclick="unsubscribe('${topicObj.id}', '${session.user?.username}')"
+                                                            class="d-inline-block btn btn-link p-0">Unsubscribe</button>
                                                 </g:if>
                                             </g:if>
                                             <g:else>
@@ -66,7 +63,8 @@
                                     </div>
 
                                     <div class="col pl-0">
-                                        <p class="text-muted mb-1" id="subscriptionCount_${topicObj.id}">${topicObj.subscription.size()}</p>
+                                        <p class="text-muted mb-1"
+                                           id="subscriptionCount_${topicObj.id}">${topicObj.subscription.size()}</p>
                                     </div>
 
                                     <div class="col pl-0">
@@ -114,7 +112,7 @@
                 </div>
             </div> <!-- topic show card-->
 
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2 ">
                     <h6 class="card-title m-2">Users: ${topicObj.name}</h6>
                     <g:each in="${topicObj.subscription}" var="subscriptionObj">
@@ -123,7 +121,7 @@
                                 <div class="col col-auto">
                                     <a href="/user/profile?user=${subscriptionObj.user.username}"><img
                                             src="${assetPath(src: "${subscriptionObj.user.photo}")}" width="75px"
-                                            height="75px"/></a>
+                                            height="75px" style="border-radius: 15px;"/></a>
                                 </div>
 
                                 <div class="col">
@@ -167,7 +165,7 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5" style="border-radius: 15px;">
+            <div class="card mt-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2 m-2">
                     <h5 class="card-title mb-4">Posts: ${topicObj.name}</h5>
                     <g:each in="${topicObj.resource}" var="resourceObj">
@@ -217,7 +215,14 @@
                                                     onclick="markRead(${currReadingItem.id})">Mark as read</button>
                                         </g:if>
                                     </g:if>
-                                    <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
+                                    <g:if test="${session.user}">
+                                        <a class="ml-4" href="/resource/viewPost?id=${resourceObj.id}">View post</a>
+                                    </g:if>
+                                    <g:elseif
+                                            test="${!session.user && resourceObj.topic.VISIBILITY == enums.VisibilityEnum.PUBLIC}">
+                                        <a class="ml-4"
+                                           href="/resource/viewPublicPost?id=${resourceObj.id}">View post</a>
+                                    </g:elseif>
                                 </div>
                             </div>
                         </div>

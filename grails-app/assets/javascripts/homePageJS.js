@@ -70,3 +70,6 @@ function setNewPassword() {
         }
         return true;
     }
+    function addListener(){
+        document.getElementById('password').addEventListener('keyup', checkPass);
+    }

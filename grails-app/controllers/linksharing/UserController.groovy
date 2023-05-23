@@ -55,7 +55,10 @@ class UserController {
             return
         } else {
             def userPic = request.getFile('photo')
-            if (userPic && !userPic.isEmpty()) {
+            String originalName = userPic.originalFilename
+            String fileExtension = originalName.substring(originalName.lastIndexOf('.') + 1).toLowerCase()
+
+            if (userPic && !userPic.isEmpty() && fileExtension in ['jpg', 'jpeg', 'png']) {
                 String filePath = "userUploads/pfp${newUser.username}"
                 new FileOutputStream("/home/lt-siddharths/LinkSharing/grails-app/assets/images/" + filePath).leftShift(userPic.getInputStream())
                 newUser.photo = filePath
@@ -97,7 +100,10 @@ class UserController {
     }
 
     def editUser() {
-        params.photo = request.getFile('photo')
+        def photo = request.getFile('photo')
+        params.photo = photo
+        String originalFilename = photo.originalFilename
+        params.originalFilename = originalFilename
         flash.message = UserService.editUser(session.user.username, params)
         User currUser = User.findByUsername(session.user.username)
         session.user.firstName = currUser.firstName
@@ -179,6 +185,7 @@ class UserController {
             }
             flash.message = "Password changed successfully, please login with new password"
             render status: 200, text: 'Success'
+            return
         }
         flash.warn = "Verification failed"
         render status: 400, text: 'Failed'

@@ -223,6 +223,31 @@ function subscribe(topicId, username) {
     });
 }
 
+function unsubscribe(topicId, username) {
+    $.ajax({
+        url: '/subscription/deleteSubscription',
+        type: 'POST',
+        data: {
+            topicId: topicId,
+            username: username
+        },
+        success: function (response) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        },
+        error: function (xhr, status, error) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        }
+    });
+}
+
 $(document).ready(function () {
     $('.page-link').click(function () {
         // $('.page-link').removeClass('active');
@@ -258,12 +283,28 @@ function deleteTopic(topicId) {
         }
     });
 }
+
+function searchInbox() {
+    console.log("inside search method")
+    var searchInput = document.getElementById('inboxSearchInput').value;
+    $.ajax({
+        url: '/readingItem/searchReadingItem',
+        type: 'GET',
+        data: {'inboxSearchQuery': searchInput},
+        success: function (response) {
+            $('.userInbox').html(response);
+        },
+        error: function (xhr, status, error) {
+            console.log("so sad")
+            console.log(error)
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var searchInput = document.getElementById('inboxSearchInput');
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            searchInput.form.submit();
-        }
+    searchInput.addEventListener('keyup', function (event) {
+        event.preventDefault();
+        searchInbox();
     });
 });

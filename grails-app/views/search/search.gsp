@@ -14,7 +14,7 @@
     <div class="row d-flex justify-content-center h-100"><!-- align-items-center -->
         <div class="col-md-4 col-lg-4 col-xl-4">
 
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-3">
                     <h5 class="card-title m-2 mb-4">Trending Topics</h5>
                     <% def trendingCount = 0 %>
@@ -26,7 +26,7 @@
                                     <div class="col col-auto">
                                         <a href="/user/profile?user=${obj[1].createdBy.username}"><img
                                                 src="${assetPath(src: "${obj[1].createdBy.photo}")}" width="70px"
-                                                height="70px"/></a>
+                                                height="70px" style="border-radius: 15px;"/></a>
                                     </div>
 
                                     <div class="col">
@@ -73,11 +73,9 @@
                                             <div class="col pl-0 mr-4">
                                                 <g:if test="${session.user}">
                                                     <g:if test="${obj[1].subscription.find { it.user.username == session.user.username }}">
-                                                        <g:form controller="subscription" action="deleteSubscription">
-                                                            <g:hiddenField name="topic" value="${obj[1].id}"/>
-                                                            <button type="submit"
-                                                                    class="d-inline-block btn btn-link p-0">Unsubscribe</button>
-                                                        </g:form>
+
+                                                            <button onclick="unsubscribe('${obj[1].id}', '${session.user?.username}')" class="d-inline-block btn btn-link p-0">Unsubscribe</button>
+
                                                     </g:if>
                                                     <g:else>
                                                         <span class="d-none" id="message_${obj[1].id}"></span>
@@ -165,7 +163,7 @@
                 </div>
             </div> <!-- Trending Topics Card -->
 
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-3 ">
                     <h5 class="card-title m-2">Top Posts</h5>
                     <g:each in="${topPostsList}" var="obj">
@@ -173,7 +171,7 @@
                             <div class="col col-auto">
                                 <a href="/user/profile?user=${obj[1].createdBy.username}"><img
                                         src="${assetPath(src: "${obj[1].createdBy.photo}")}" width="70px"
-                                        height="70px"/></a>
+                                        height="70px" style="border-radius: 15px;"/></a>
                             </div>
 
                             <div class="col">
@@ -233,7 +231,7 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2 m-2">
                     <h5 class="card-title mb-4">Search for "${searchQuery}"</h5>
                     <g:each in="${searchResultsList}" var="resourceObj">

@@ -20,6 +20,17 @@ class ResourceRatingService {
         }
         return rating
     }
+    def fetchRatingCount(Long resourceId){
+        def count = ResourceRating.createCriteria().get {
+            resource {
+                eq('id', resourceId)
+            }
+            projections {
+                count('score')
+            }
+        }
+        return count
+    }
 
     boolean addRating(Long resourceId, String username, Integer newScore) {
         Resource currResource = Resource.findById(resourceId)

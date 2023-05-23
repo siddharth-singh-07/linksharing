@@ -12,13 +12,13 @@
 <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center h-100"><!-- align-items-center -->
         <div class="col-md-4 col-lg-4 col-xl-4">
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body p-2">
                     <div class="row align-items-center">
                         <div class="col-sm-4 col-xl-3 col-lg-4 mr-2 mt-1">
                             <a href="/user/profile?user=${session.user.username}"><img
                                     src="${assetPath(src: "${session.user?.photo}")}" alt="User" width="95px"
-                                    height="95px"/></a>
+                                    height="95px" style="border-radius: 15px;"/></a>
                         </div>
 
                         <div class="col-sm-8 col-xl-8 col-lg-8">
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="card mt-5 mb-5" style="border-radius: 15px;">
+            <div class="card mt-5 mb-5 bg-light" style="border-radius: 15px;">
                 <h5 class="card-title m-2">Topics</h5>
 
                 <g:each in="${userTopicsList}" var="topicObj">
@@ -69,7 +69,7 @@
                             <div class="col col-auto">
                                 <a href="/user/profile?user=${topicObj.createdBy.username}"><img
                                         src="${assetPath(src: "${topicObj.createdBy.photo}")}" width="70px"
-                                        height="70px"/></a>
+                                        height="70px" style="border-radius: 15px;"/></a>
                             </div>
 
                             <div class="col">
@@ -184,10 +184,10 @@
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7 ml-5">
-            <div class="card mt-5" style="border-radius: 15px;">
+            <div class="card mt-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Profile</h5>
-                    <g:uploadForm onsubmit="return ValidateForm()" controller="user" action="editUser">
+                    <g:uploadForm controller="user" action="editUser">
                         <div class="row mb-2">
                             <div class="col form-text">
                                 <label for="firstName">First Name</label>
@@ -228,7 +228,8 @@
                             </div>
 
                             <div class="col">
-                                <g:field type="file" id="photo" class="form-control" name="photo"></g:field>
+                                <g:field type="file" id="photo" class="form-control" name="photo"
+                                         accept=".jpg, .jpeg, .png" onchange="return validateFile();"></g:field>
                             </div>
                         </div>
 
@@ -237,14 +238,14 @@
                             </div>
 
                             <div class="col">
-                                <button type="submit" class="btn btn-outline-primary">Update</button>
+                                <button type="submit" class="btn btn-outline-primary" id="updateProfileBtn" onclick="return ValidateForm();">Update</button>
                             </div>
                         </div>
                     </g:uploadForm>
                 </div>
             </div>
 
-            <div class="card mt-4 mb-5" style="border-radius: 15px;">
+            <div class="card mt-4 mb-5 bg-light" style="border-radius: 15px;">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Change password</h5>
                     <g:uploadForm controller="user" action="changePass">
@@ -255,7 +256,7 @@
 
                             <div class="col">
                                 <g:field type="password" id="password"
-                                         class="form-control" name="password" maxlength="254"></g:field>
+                                         class="form-control" name="password" maxlength="254" minlength="8"></g:field>
                             </div>
                         </div>
 
@@ -267,7 +268,7 @@
                             <div class="col">
                                 <span id="pswdText" class="text-danger d-none">Password does not match</span>
                                 <g:field type="password" onkeyup="checkPass()" class="form-control" id="cnfPassword"
-                                         name="cnfPassword"></g:field>
+                                         name="cnfPassword" maxlength="254" minlength="8"></g:field>
                             </div>
                         </div>
 

@@ -149,3 +149,27 @@ function markRead(readingItemId) {
         }
     });
 }
+function unsubscribe(topicId, username) {
+    $.ajax({
+        url: '/subscription/deleteSubscription',
+        type: 'POST',
+        data: {
+            topicId: topicId,
+            username: username
+        },
+        success: function (response) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        },
+        error: function (xhr, status, error) {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            setTimeout(function () {
+                window.location.reload()
+            }, 500);
+        }
+    });
+}
